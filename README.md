@@ -1,4 +1,4 @@
-# CrimeWatch
+# NeighborhoodWatch
 -----
 **Design Document**
 
@@ -19,7 +19,7 @@ Yash Shukla
 
 
 ## Introduction
- You are new to Cincinnati, you need advice on which neighborhood to live in. Who do you turn to? *CrimeWatch* is an application that filters safe neighborhoods based on crime statistics provided by the police department.
+ You are new to Cincinnati, you need advice on which neighborhood to live in. Who do you turn to? *NeighborhoodWatch* is an application that filters safe neighborhoods based on crime statistics provided by the police department.
 
 - Attributes safe based on crime reports (reported and handled-closed or not)
 - Based on your gender
