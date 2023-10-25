@@ -1,4 +1,4 @@
-$white: #ffffff;
+$white: #929fb3;
 $black: #000000;
 $primary1: #1c1c1c;
 $primary2: #f1db25;
@@ -39,9 +39,9 @@ $primary2: #f1db25;
 }
 
 body {
-  @include main-font;
-  color: #0c0c0c;
-  background-color: #ffffff;
+    @include main-font;
+    color: #0c0c0c;
+    background-color: #929fb3;
 }
 
 .layout_padding {

@@ -14,6 +14,17 @@ namespace Neighborhood_Watch.Pages
 
         public void OnGet()
         {
+            Task<HttpResponseMessage> task = HttpClient.GetAsync("");
+            HttpResponseMessage response = task.Result;
+
+            List<Record> records = new List<Record>();
+
+            if (response != null)
+            {
+                Task<string> readString = response.Content.ReadAsStringAsync();
+                string recordJson = readString.Result;
+                records = records.FromJson(recordJson) 
+            }
 
         }
     }
