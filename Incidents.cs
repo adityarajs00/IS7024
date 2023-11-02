@@ -146,7 +146,7 @@ namespace IncidentRecord
             Converters =
             {
                 ClsdConverter.Singleton,
-                DayofweekConverter.Singleton,
+                //DayofweekConverter.Singleton,
                 SuspectAgeConverter.Singleton,
                 GenderConverter.Singleton,
                 TheftCodeConverter.Singleton,
@@ -239,46 +239,46 @@ namespace IncidentRecord
         public static readonly ClsdConverter Singleton = new ClsdConverter();
     }
 
-    internal class DayofweekConverter : JsonConverter
-    {
-        public override bool CanConvert(Type t) => t == typeof(Dayofweek) || t == typeof(Dayofweek?);
+    //internal class DayofweekConverter : JsonConverter
+    //{
+    //    public override bool CanConvert(Type t) => t == typeof(Dayofweek) || t == typeof(Dayofweek?);
 
-        public override object ReadJson(JsonReader reader, Type t, object existingValue, JsonSerializer serializer)
-        {
-            if (reader.TokenType == JsonToken.Null) return null;
-            var value = serializer.Deserialize<string>(reader);
-            switch (value)
-            {
-                case "MONDAY":
-                    return Dayofweek.Monday;
-                case "TUESDAY":
-                    return Dayofweek.Tuesday;
-            }
-            throw new Exception("Cannot unmarshal type Dayofweek");
-        }
+    //    public override object ReadJson(JsonReader reader, Type t, object existingValue, JsonSerializer serializer)
+    //    {
+    //        if (reader.TokenType == JsonToken.Null) return null;
+    //        var value = serializer.Deserialize<string>(reader);
+    //        switch (value)
+    //        {
+    //            case "MONDAY":
+    //                return Dayofweek.Monday;
+    //            case "TUESDAY":
+    //                return Dayofweek.Tuesday;
+    //        }
+    //        throw new Exception("Cannot unmarshal type Dayofweek");
+    //    }
 
-        public override void WriteJson(JsonWriter writer, object untypedValue, JsonSerializer serializer)
-        {
-            if (untypedValue == null)
-            {
-                serializer.Serialize(writer, null);
-                return;
-            }
-            var value = (Dayofweek)untypedValue;
-            switch (value)
-            {
-                case Dayofweek.Monday:
-                    serializer.Serialize(writer, "MONDAY");
-                    return;
-                case Dayofweek.Tuesday:
-                    serializer.Serialize(writer, "TUESDAY");
-                    return;
-            }
-            throw new Exception("Cannot marshal type Dayofweek");
-        }
+    //    public override void WriteJson(JsonWriter writer, object untypedValue, JsonSerializer serializer)
+    //    {
+    //        if (untypedValue == null)
+    //        {
+    //            serializer.Serialize(writer, null);
+    //            return;
+    //        }
+    //        var value = (Dayofweek)untypedValue;
+    //        switch (value)
+    //        {
+    //            case Dayofweek.Monday:
+    //                serializer.Serialize(writer, "MONDAY");
+    //                return;
+    //            case Dayofweek.Tuesday:
+    //                serializer.Serialize(writer, "TUESDAY");
+    //                return;
+    //        }
+    //        throw new Exception("Cannot marshal type Dayofweek");
+    //    }
 
-        public static readonly DayofweekConverter Singleton = new DayofweekConverter();
-    }
+    //    public static readonly DayofweekConverter Singleton = new DayofweekConverter();
+    //}
 
     internal class SuspectAgeConverter : JsonConverter
     {
