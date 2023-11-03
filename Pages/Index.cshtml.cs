@@ -1,7 +1,5 @@
-
 using CallsForService;
 using IncidentRecord;
-
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.IdentityModel.Tokens;
@@ -13,7 +11,6 @@ namespace Neighborhood_Watch.Pages
     {
         static readonly HttpClient client = new HttpClient();
         private readonly ILogger<IndexModel> _logger;
-        static readonly HttpClient client = new HttpClient();
         public IndexModel(ILogger<IndexModel> logger)
         {
             _logger = logger;
@@ -30,25 +27,7 @@ namespace Neighborhood_Watch.Pages
             Task<List<Calls>> Services = GetCallsData();
             List<Calls> Service = Services.Result;
             ViewData["Services"] = Service;
-
-            
-            /*var task = client.GetAsync("https://data.cincinnati-oh.gov/resource/k59e-2pvf.json");
-            HttpResponseMessage result = task.Result;
-            List<Incidents> incident = new List<Incidents>();
-            if (result.IsSuccessStatusCode)
-            {
-                Task<string> readString = result.Content.ReadAsStringAsync();
-                string incidentJson = readString.Result;
-    
-                incident = Incidents.FromJson(incidentJson);
-            }
-            ViewData["Incidents"] = incident;*/
-
-            /*Task<HttpResponseMessage> task = HttpClient.GetAsync("");
-            HttpResponseMessage response = task.Result;
-
-
-            
+   
 
             /*var task = client.GetAsync("https://data.cincinnati-oh.gov/resource/k59e-2pvf.json");
             HttpResponseMessage result = task.Result;
@@ -103,28 +82,28 @@ namespace Neighborhood_Watch.Pages
                 incident = Incidents.FromJson(incidentJson);
                 
                 //Joining the data sets
-                Task<HttpResponseMessage> test_response = client.GetAsync("https://data.cincinnati-oh.gov/resource/k59e-2pvf.json");
-                HttpResponseMessage Test_Response = await test_response;
-                Task<string> ResponseStringTask = Test_Response.Content.ReadAsStringAsync();
-                string Response_Test_Json = ResponseStringTask.Result;
-                List<Responses> test_responses_1 = Responses.FromJson(Response_Test_Json);
+                //Task<HttpResponseMessage> test_response = client.GetAsync("https://data.cincinnati-oh.gov/resource/k59e-2pvf.json");
+                //HttpResponseMessage Test_Response = await test_response;
+                //Task<string> ResponseStringTask = Test_Response.Content.ReadAsStringAsync();
+                //string Response_Test_Json = ResponseStringTask.Result;
+                //List<Responses> test_responses_1 = Responses.FromJson(Response_Test_Json);
 
-                IDictionary<string, Responses> cpdneighbourhood = new Dictionary<string, Responses>();
-                foreach (Responses t_response in test_responses_1)
-                {
-                    cpdneighbourhood[t_response.CpdNeighborhood] = t_response;
-                }
-                List<Incidents> test_incidents = new List<Incidents>();
-                foreach (Incidents t_incidents in incident)
-                {
-                    if (cpdneighbourhood.ContainsKey(t_incidents.CpdNeighborhood))
-                    {
-                        test_incidents.Add(t_incidents);
-                    }
-                }
+                //IDictionary<string, Responses> cpdneighbourhood = new Dictionary<string, Responses>();
+                //foreach (Responses t_response in test_responses_1)
+                //{
+                //    cpdneighbourhood[t_response.CpdNeighborhood] = t_response;
+                //}
+                //List<Incidents> test_incidents = new List<Incidents>();
+                //foreach (Incidents t_incidents in incident)
+                //{
+                //    if (cpdneighbourhood.ContainsKey(t_incidents.CpdNeighborhood))
+                //    {
+                //        test_incidents.Add(t_incidents);
+                //    }
+                //}
 
-                return test_incidents;
-                // return incident;(This is for Incident class)
+                //return test_incidents;
+                return incident;
             }
 
                 );
