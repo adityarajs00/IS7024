@@ -1,10 +1,16 @@
 ﻿@page
+@using CallsForService;
 @model IndexModel
 @{
     ViewData["Title"] = "Home page";
+    List<Calls> cls = (List<Calls>)ViewData["Services"];
 }
 
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    @foreach(Calls cl in cls)
+    {
+        <h3>@cl.CpdNeighborhood</h3>
+    }
 </div>
