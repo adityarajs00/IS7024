@@ -1,9 +1,11 @@
 ﻿@page
 @using IncidentRecord;
+
 @model IndexModel
 @{
     ViewData["Title"] = "Home page";
     List <Incidents> incident = (List<Incidents>) ViewData["Incidents"];
+
 }
 
 <div class="text-center">
@@ -13,12 +15,13 @@
 
 <table>
     <tr>
-        <th>Plant ID</th>
-        <th>Specimen ID</th>
-        <th>Latitude</th>
-        <th>Longitude</th>
-        <th>Address</th>
+        <th>Instance Id</th>
+        <th>Incident No</th>
+        <th>Date Reported</th>
+        <th>Date From</th>
+        <th>Ucr</th>
     </tr>
+   
     @{
         foreach (Incidents incidents in incident)
         {
@@ -31,4 +34,6 @@
             </tr>
         }
     }
+   
 </table>
+

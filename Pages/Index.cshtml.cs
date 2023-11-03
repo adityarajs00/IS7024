@@ -1,6 +1,7 @@
 ﻿using IncidentRecord;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.IdentityModel.Tokens;
 using System.Threading.Tasks;
 
 namespace Neighborhood_Watch.Pages
@@ -18,8 +19,12 @@ namespace Neighborhood_Watch.Pages
         public void OnGet()
         {
 
+            Task<List<Incidents>> incidents = GetIncidentsData();
+            List<Incidents> incident = incidents.Result;
+            ViewData["Incidents"] = incident;
+
             
-            var task = client.GetAsync("https://data.cincinnati-oh.gov/resource/k59e-2pvf.json");
+            /*var task = client.GetAsync("https://data.cincinnati-oh.gov/resource/k59e-2pvf.json");
             HttpResponseMessage result = task.Result;
             List<Incidents> incident = new List<Incidents>();
             if (result.IsSuccessStatusCode)
@@ -29,7 +34,8 @@ namespace Neighborhood_Watch.Pages
     
                 incident = Incidents.FromJson(incidentJson);
             }
-            ViewData["Incidents"] = incident;
+            ViewData["Incidents"] = incident;*/
+
             /*Task<HttpResponseMessage> task = HttpClient.GetAsync("");
             HttpResponseMessage response = task.Result;
 
@@ -44,5 +50,22 @@ namespace Neighborhood_Watch.Pages
            */
 
         }
+        private async Task<List<Incidents>> GetIncidentsData()
+        {
+            List<Incidents> incident = new List<Incidents>();
+            return await Task.Run(async () =>
+            {
+                Task<HttpResponseMessage> task = client.GetAsync("https://data.cincinnati-oh.gov/resource/k59e-2pvf.json");
+                HttpResponseMessage result = await task;
+                Task<string> readString = result.Content.ReadAsStringAsync();
+                string incidentJson = readString.Result;
+                incident = Incidents.FromJson(incidentJson);
+               
+                return incident;
+            }
+
+                );
+        }
+       
     }
 }

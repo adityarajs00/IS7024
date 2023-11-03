@@ -33,28 +33,30 @@ namespace IncidentRecord
         [JsonProperty("date_to")]
         public DateTimeOffset DateTo { get; set; }
 
-        [JsonProperty("ucr")]
+        [JsonProperty("ucr", NullValueHandling = NullValueHandling.Ignore)]
         [JsonConverter(typeof(ParseStringConverter))]
-        public long Ucr { get; set; }
+        public long? Ucr { get; set; }
 
         [JsonProperty("dst")]
-        public string Dst { get; set; }
+        public DstUnion Dst { get; set; }
 
         [JsonProperty("beat", NullValueHandling = NullValueHandling.Ignore)]
-        [JsonConverter(typeof(ParseStringConverter))]
-        public long? Beat { get; set; }
+        public BeatUnion? Beat { get; set; }
 
-        [JsonProperty("offense")]
+        [JsonProperty("offense", NullValueHandling = NullValueHandling.Ignore)]
         public string Offense { get; set; }
 
-        [JsonProperty("location")]
+        [JsonProperty("location", NullValueHandling = NullValueHandling.Ignore)]
         public string Location { get; set; }
+
+        [JsonProperty("theft_code", NullValueHandling = NullValueHandling.Ignore)]
+        public TheftCode? TheftCode { get; set; }
 
         [JsonProperty("dayofweek")]
         public Dayofweek Dayofweek { get; set; }
 
-        [JsonProperty("weapons")]
-        public Weapons Weapons { get; set; }
+        [JsonProperty("weapons", NullValueHandling = NullValueHandling.Ignore)]
+        public Weapons? Weapons { get; set; }
 
         [JsonProperty("hour_from")]
         public string HourFrom { get; set; }
@@ -62,7 +64,7 @@ namespace IncidentRecord
         [JsonProperty("hour_to")]
         public string HourTo { get; set; }
 
-        [JsonProperty("address_x")]
+        [JsonProperty("address_x", NullValueHandling = NullValueHandling.Ignore)]
         public string AddressX { get; set; }
 
         [JsonProperty("longitude_x", NullValueHandling = NullValueHandling.Ignore)]
@@ -72,16 +74,19 @@ namespace IncidentRecord
         public string LatitudeX { get; set; }
 
         [JsonProperty("victim_age")]
-        public string VictimAge { get; set; }
+        public Age VictimAge { get; set; }
+
+        [JsonProperty("victim_gender", NullValueHandling = NullValueHandling.Ignore)]
+        public Gender? VictimGender { get; set; }
 
         [JsonProperty("suspect_age")]
-        public SuspectAge SuspectAge { get; set; }
+        public Age SuspectAge { get; set; }
 
         [JsonProperty("suspect_gender", NullValueHandling = NullValueHandling.Ignore)]
         public Gender? SuspectGender { get; set; }
 
-        [JsonProperty("ucr_group")]
-        public UcrGroup UcrGroup { get; set; }
+        [JsonProperty("ucr_group", NullValueHandling = NullValueHandling.Ignore)]
+        public UcrGroup? UcrGroup { get; set; }
 
         [JsonProperty("zip")]
         [JsonConverter(typeof(ParseStringConverter))]
@@ -93,39 +98,70 @@ namespace IncidentRecord
         [JsonProperty("sna_neighborhood")]
         public string SnaNeighborhood { get; set; }
 
+        [JsonProperty("clsd", NullValueHandling = NullValueHandling.Ignore)]
+        public Clsd? Clsd { get; set; }
+
         [JsonProperty("rpt_area", NullValueHandling = NullValueHandling.Ignore)]
-        [JsonConverter(typeof(ParseStringConverter))]
-        public long? RptArea { get; set; }
+        public string RptArea { get; set; }
 
         [JsonProperty("cpd_neighborhood", NullValueHandling = NullValueHandling.Ignore)]
         public string CpdNeighborhood { get; set; }
 
-        [JsonProperty("victim_gender", NullValueHandling = NullValueHandling.Ignore)]
-        public Gender? VictimGender { get; set; }
-
-        [JsonProperty("theft_code", NullValueHandling = NullValueHandling.Ignore)]
-        public TheftCode? TheftCode { get; set; }
-
-        [JsonProperty("clsd", NullValueHandling = NullValueHandling.Ignore)]
-        public Clsd? Clsd { get; set; }
-
         [JsonProperty("date_of_clearance", NullValueHandling = NullValueHandling.Ignore)]
         public DateTimeOffset? DateOfClearance { get; set; }
+
+        [JsonProperty("victim_ethnicity", NullValueHandling = NullValueHandling.Ignore)]
+        public Ethnicity? VictimEthnicity { get; set; }
+
+        [JsonProperty("suspect_ethnicity", NullValueHandling = NullValueHandling.Ignore)]
+        public Ethnicity? SuspectEthnicity { get; set; }
+
+        [JsonProperty("totalnumbervictims", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonConverter(typeof(ParseStringConverter))]
+        public long? Totalnumbervictims { get; set; }
+
+        [JsonProperty("totalsuspects", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonConverter(typeof(ParseStringConverter))]
+        public long? Totalsuspects { get; set; }
     }
 
-    public enum Clsd { FClearedByArrestAdult, HWarrantIssued, IInvestigationPending, ZEarlyClosed };
+    public enum BeatEnum { CentralBusinessSection };
 
-    public enum Dayofweek { Monday, Tuesday };
+    public enum Clsd { DVictimRefusedToCooperate, FClearedByArrestAdult, GClearedByArrestJuvenile, HWarrantIssued, IInvestigationPending, JClosed, KUnfounded, ZEarlyClosed };
 
-    public enum SuspectAge { Over70, The1825, The3140, The4150, Under18, Unknown };
+    public enum Dayofweek { Friday, Monday, Saturday, Sunday, Thursday, Tuesday, Wednesday };
+
+    public enum DstEnum { CentralBusiness };
+
+    public enum Age { Adult18, JuvenileUnder18, Over70, The1825, The2630, The3140, The4150, The5160, The6170, Under18, Unknown };
+
+    public enum Ethnicity { NotOfHispanicOrig };
 
     public enum Gender { Female, Male, Unknown };
 
-    public enum TheftCode { The23FTheftFromMotorVehicle, The24OMotorVehicleTheft };
+    public enum TheftCode { The23CShoplifting, The23DTheftFromBuilding, The23ETheftFromCoinOperatedMachineOrDevice, The23FTheftFromMotorVehicle, The23GTheftOfMotorVehiclePartsOrAccessories, The23HAllOtherLarceny, The24ITheftOfLicensePlate, The24OMotorVehicleTheft };
 
-    public enum UcrGroup { BurglaryBreakingEntering, Part2Minor, Robbery, Theft };
+    public enum UcrGroup { AggravatedAssaults, BurglaryBreakingEntering, Homicide, Part2Minor, Rape, Robbery, Theft, UnauthorizedUse };
 
-    public enum Weapons { The12Handgun, The40PersonalWeaponsHandsFeetTeethEtc, The99None, UUnknown };
+    public enum Weapons { The11FirearmTypeNotStated, The12AAutomaticHandgun, The12Handgun, The14Shotgun, The18BbAndPelletGuns, The20KnifeCuttingInstrumentIcepickAxEtc, The30BluntObjectClubHammerEtc, The35MotorVehicleWhenUsedAsWeapon, The40PersonalWeaponsHandsFeetTeethEtc, The80OtherWeapon, The85AsphyxiationByDrowningStrangulationSuffocation, The99None, UUnknown };
+
+    public partial struct BeatUnion
+    {
+        public BeatEnum? Enum;
+        public long? Integer;
+
+        public static implicit operator BeatUnion(BeatEnum Enum) => new BeatUnion { Enum = Enum };
+        public static implicit operator BeatUnion(long Integer) => new BeatUnion { Integer = Integer };
+    }
+
+    public partial struct DstUnion
+    {
+        public DstEnum? Enum;
+        public long? Integer;
+
+        public static implicit operator DstUnion(DstEnum Enum) => new DstUnion { Enum = Enum };
+        public static implicit operator DstUnion(long Integer) => new DstUnion { Integer = Integer };
+    }
 
     public partial class Incidents
     {
@@ -145,9 +181,14 @@ namespace IncidentRecord
             DateParseHandling = DateParseHandling.None,
             Converters =
             {
+                BeatUnionConverter.Singleton,
+                BeatEnumConverter.Singleton,
                 ClsdConverter.Singleton,
-                //DayofweekConverter.Singleton,
-                SuspectAgeConverter.Singleton,
+                DayofweekConverter.Singleton,
+                DstUnionConverter.Singleton,
+                DstEnumConverter.Singleton,
+                AgeConverter.Singleton,
+                EthnicityConverter.Singleton,
                 GenderConverter.Singleton,
                 TheftCodeConverter.Singleton,
                 UcrGroupConverter.Singleton,
@@ -155,6 +196,305 @@ namespace IncidentRecord
                 new IsoDateTimeConverter { DateTimeStyles = DateTimeStyles.AssumeUniversal }
             },
         };
+    }
+
+    internal class BeatUnionConverter : JsonConverter
+    {
+        public override bool CanConvert(Type t) => t == typeof(BeatUnion) || t == typeof(BeatUnion?);
+
+        public override object ReadJson(JsonReader reader, Type t, object existingValue, JsonSerializer serializer)
+        {
+            switch (reader.TokenType)
+            {
+                case JsonToken.String:
+                case JsonToken.Date:
+                    var stringValue = serializer.Deserialize<string>(reader);
+                    if (stringValue == "CENTRAL BUSINESS SECTION")
+                    {
+                        return new BeatUnion { Enum = BeatEnum.CentralBusinessSection };
+                    }
+                    long l;
+                    if (Int64.TryParse(stringValue, out l))
+                    {
+                        return new BeatUnion { Integer = l };
+                    }
+                    break;
+            }
+            throw new Exception("Cannot unmarshal type BeatUnion");
+        }
+
+        public override void WriteJson(JsonWriter writer, object untypedValue, JsonSerializer serializer)
+        {
+            var value = (BeatUnion)untypedValue;
+            if (value.Enum != null)
+            {
+                if (value.Enum == BeatEnum.CentralBusinessSection)
+                {
+                    serializer.Serialize(writer, "CENTRAL BUSINESS SECTION");
+                    return;
+                }
+            }
+            if (value.Integer != null)
+            {
+                serializer.Serialize(writer, value.Integer.Value.ToString());
+                return;
+            }
+            throw new Exception("Cannot marshal type BeatUnion");
+        }
+
+        public static readonly BeatUnionConverter Singleton = new BeatUnionConverter();
+    }
+
+    internal class BeatEnumConverter : JsonConverter
+    {
+        public override bool CanConvert(Type t) => t == typeof(BeatEnum) || t == typeof(BeatEnum?);
+
+        public override object ReadJson(JsonReader reader, Type t, object existingValue, JsonSerializer serializer)
+        {
+            if (reader.TokenType == JsonToken.Null) return null;
+            var value = serializer.Deserialize<string>(reader);
+            if (value == "CENTRAL BUSINESS SECTION")
+            {
+                return BeatEnum.CentralBusinessSection;
+            }
+            throw new Exception("Cannot unmarshal type BeatEnum");
+        }
+
+        public override void WriteJson(JsonWriter writer, object untypedValue, JsonSerializer serializer)
+        {
+            if (untypedValue == null)
+            {
+                serializer.Serialize(writer, null);
+                return;
+            }
+            var value = (BeatEnum)untypedValue;
+            if (value == BeatEnum.CentralBusinessSection)
+            {
+                serializer.Serialize(writer, "CENTRAL BUSINESS SECTION");
+                return;
+            }
+            throw new Exception("Cannot marshal type BeatEnum");
+        }
+
+        public static readonly BeatEnumConverter Singleton = new BeatEnumConverter();
+    }
+
+    internal class ClsdConverter : JsonConverter
+    {
+        public override bool CanConvert(Type t) => t == typeof(Clsd) || t == typeof(Clsd?);
+
+        public override object ReadJson(JsonReader reader, Type t, object existingValue, JsonSerializer serializer)
+        {
+            if (reader.TokenType == JsonToken.Null) return null;
+            var value = serializer.Deserialize<string>(reader);
+            switch (value)
+            {
+                case "D--VICTIM REFUSED TO COOPERATE":
+                    return Clsd.DVictimRefusedToCooperate;
+                case "F--CLEARED BY ARREST - ADULT":
+                    return Clsd.FClearedByArrestAdult;
+                case "G--CLEARED BY ARREST - JUVENILE":
+                    return Clsd.GClearedByArrestJuvenile;
+                case "H--WARRANT ISSUED":
+                    return Clsd.HWarrantIssued;
+                case "I--INVESTIGATION PENDING":
+                    return Clsd.IInvestigationPending;
+                case "J--CLOSED":
+                    return Clsd.JClosed;
+                case "K--UNFOUNDED":
+                    return Clsd.KUnfounded;
+                case "Z--EARLY CLOSED":
+                    return Clsd.ZEarlyClosed;
+            }
+            throw new Exception("Cannot unmarshal type Clsd");
+        }
+
+        public override void WriteJson(JsonWriter writer, object untypedValue, JsonSerializer serializer)
+        {
+            if (untypedValue == null)
+            {
+                serializer.Serialize(writer, null);
+                return;
+            }
+            var value = (Clsd)untypedValue;
+            switch (value)
+            {
+                case Clsd.DVictimRefusedToCooperate:
+                    serializer.Serialize(writer, "D--VICTIM REFUSED TO COOPERATE");
+                    return;
+                case Clsd.FClearedByArrestAdult:
+                    serializer.Serialize(writer, "F--CLEARED BY ARREST - ADULT");
+                    return;
+                case Clsd.GClearedByArrestJuvenile:
+                    serializer.Serialize(writer, "G--CLEARED BY ARREST - JUVENILE");
+                    return;
+                case Clsd.HWarrantIssued:
+                    serializer.Serialize(writer, "H--WARRANT ISSUED");
+                    return;
+                case Clsd.IInvestigationPending:
+                    serializer.Serialize(writer, "I--INVESTIGATION PENDING");
+                    return;
+                case Clsd.JClosed:
+                    serializer.Serialize(writer, "J--CLOSED");
+                    return;
+                case Clsd.KUnfounded:
+                    serializer.Serialize(writer, "K--UNFOUNDED");
+                    return;
+                case Clsd.ZEarlyClosed:
+                    serializer.Serialize(writer, "Z--EARLY CLOSED");
+                    return;
+            }
+            throw new Exception("Cannot marshal type Clsd");
+        }
+
+        public static readonly ClsdConverter Singleton = new ClsdConverter();
+    }
+
+    internal class DayofweekConverter : JsonConverter
+    {
+        public override bool CanConvert(Type t) => t == typeof(Dayofweek) || t == typeof(Dayofweek?);
+
+        public override object ReadJson(JsonReader reader, Type t, object existingValue, JsonSerializer serializer)
+        {
+            if (reader.TokenType == JsonToken.Null) return null;
+            var value = serializer.Deserialize<string>(reader);
+            switch (value)
+            {
+                case "FRIDAY":
+                    return Dayofweek.Friday;
+                case "MONDAY":
+                    return Dayofweek.Monday;
+                case "SATURDAY":
+                    return Dayofweek.Saturday;
+                case "SUNDAY":
+                    return Dayofweek.Sunday;
+                case "THURSDAY":
+                    return Dayofweek.Thursday;
+                case "TUESDAY":
+                    return Dayofweek.Tuesday;
+                case "WEDNESDAY":
+                    return Dayofweek.Wednesday;
+            }
+            throw new Exception("Cannot unmarshal type Dayofweek");
+        }
+
+        public override void WriteJson(JsonWriter writer, object untypedValue, JsonSerializer serializer)
+        {
+            if (untypedValue == null)
+            {
+                serializer.Serialize(writer, null);
+                return;
+            }
+            var value = (Dayofweek)untypedValue;
+            switch (value)
+            {
+                case Dayofweek.Friday:
+                    serializer.Serialize(writer, "FRIDAY");
+                    return;
+                case Dayofweek.Monday:
+                    serializer.Serialize(writer, "MONDAY");
+                    return;
+                case Dayofweek.Saturday:
+                    serializer.Serialize(writer, "SATURDAY");
+                    return;
+                case Dayofweek.Sunday:
+                    serializer.Serialize(writer, "SUNDAY");
+                    return;
+                case Dayofweek.Thursday:
+                    serializer.Serialize(writer, "THURSDAY");
+                    return;
+                case Dayofweek.Tuesday:
+                    serializer.Serialize(writer, "TUESDAY");
+                    return;
+                case Dayofweek.Wednesday:
+                    serializer.Serialize(writer, "WEDNESDAY");
+                    return;
+            }
+            throw new Exception("Cannot marshal type Dayofweek");
+        }
+
+        public static readonly DayofweekConverter Singleton = new DayofweekConverter();
+    }
+
+    internal class DstUnionConverter : JsonConverter
+    {
+        public override bool CanConvert(Type t) => t == typeof(DstUnion) || t == typeof(DstUnion?);
+
+        public override object ReadJson(JsonReader reader, Type t, object existingValue, JsonSerializer serializer)
+        {
+            switch (reader.TokenType)
+            {
+                case JsonToken.String:
+                case JsonToken.Date:
+                    var stringValue = serializer.Deserialize<string>(reader);
+                    if (stringValue == "CENTRAL BUSINESS")
+                    {
+                        return new DstUnion { Enum = DstEnum.CentralBusiness };
+                    }
+                    long l;
+                    if (Int64.TryParse(stringValue, out l))
+                    {
+                        return new DstUnion { Integer = l };
+                    }
+                    break;
+            }
+            throw new Exception("Cannot unmarshal type DstUnion");
+        }
+
+        public override void WriteJson(JsonWriter writer, object untypedValue, JsonSerializer serializer)
+        {
+            var value = (DstUnion)untypedValue;
+            if (value.Enum != null)
+            {
+                if (value.Enum == DstEnum.CentralBusiness)
+                {
+                    serializer.Serialize(writer, "CENTRAL BUSINESS");
+                    return;
+                }
+            }
+            if (value.Integer != null)
+            {
+                serializer.Serialize(writer, value.Integer.Value.ToString());
+                return;
+            }
+            throw new Exception("Cannot marshal type DstUnion");
+        }
+
+        public static readonly DstUnionConverter Singleton = new DstUnionConverter();
+    }
+
+    internal class DstEnumConverter : JsonConverter
+    {
+        public override bool CanConvert(Type t) => t == typeof(DstEnum) || t == typeof(DstEnum?);
+
+        public override object ReadJson(JsonReader reader, Type t, object existingValue, JsonSerializer serializer)
+        {
+            if (reader.TokenType == JsonToken.Null) return null;
+            var value = serializer.Deserialize<string>(reader);
+            if (value == "CENTRAL BUSINESS")
+            {
+                return DstEnum.CentralBusiness;
+            }
+            throw new Exception("Cannot unmarshal type DstEnum");
+        }
+
+        public override void WriteJson(JsonWriter writer, object untypedValue, JsonSerializer serializer)
+        {
+            if (untypedValue == null)
+            {
+                serializer.Serialize(writer, null);
+                return;
+            }
+            var value = (DstEnum)untypedValue;
+            if (value == DstEnum.CentralBusiness)
+            {
+                serializer.Serialize(writer, "CENTRAL BUSINESS");
+                return;
+            }
+            throw new Exception("Cannot marshal type DstEnum");
+        }
+
+        public static readonly DstEnumConverter Singleton = new DstEnumConverter();
     }
 
     internal class ParseStringConverter : JsonConverter
@@ -188,101 +528,9 @@ namespace IncidentRecord
         public static readonly ParseStringConverter Singleton = new ParseStringConverter();
     }
 
-    internal class ClsdConverter : JsonConverter
+    internal class AgeConverter : JsonConverter
     {
-        public override bool CanConvert(Type t) => t == typeof(Clsd) || t == typeof(Clsd?);
-
-        public override object ReadJson(JsonReader reader, Type t, object existingValue, JsonSerializer serializer)
-        {
-            if (reader.TokenType == JsonToken.Null) return null;
-            var value = serializer.Deserialize<string>(reader);
-            switch (value)
-            {
-                case "F--CLEARED BY ARREST - ADULT":
-                    return Clsd.FClearedByArrestAdult;
-                case "H--WARRANT ISSUED":
-                    return Clsd.HWarrantIssued;
-                case "I--INVESTIGATION PENDING":
-                    return Clsd.IInvestigationPending;
-                case "Z--EARLY CLOSED":
-                    return Clsd.ZEarlyClosed;
-            }
-            throw new Exception("Cannot unmarshal type Clsd");
-        }
-
-        public override void WriteJson(JsonWriter writer, object untypedValue, JsonSerializer serializer)
-        {
-            if (untypedValue == null)
-            {
-                serializer.Serialize(writer, null);
-                return;
-            }
-            var value = (Clsd)untypedValue;
-            switch (value)
-            {
-                case Clsd.FClearedByArrestAdult:
-                    serializer.Serialize(writer, "F--CLEARED BY ARREST - ADULT");
-                    return;
-                case Clsd.HWarrantIssued:
-                    serializer.Serialize(writer, "H--WARRANT ISSUED");
-                    return;
-                case Clsd.IInvestigationPending:
-                    serializer.Serialize(writer, "I--INVESTIGATION PENDING");
-                    return;
-                case Clsd.ZEarlyClosed:
-                    serializer.Serialize(writer, "Z--EARLY CLOSED");
-                    return;
-            }
-            throw new Exception("Cannot marshal type Clsd");
-        }
-
-        public static readonly ClsdConverter Singleton = new ClsdConverter();
-    }
-
-    //internal class DayofweekConverter : JsonConverter
-    //{
-    //    public override bool CanConvert(Type t) => t == typeof(Dayofweek) || t == typeof(Dayofweek?);
-
-    //    public override object ReadJson(JsonReader reader, Type t, object existingValue, JsonSerializer serializer)
-    //    {
-    //        if (reader.TokenType == JsonToken.Null) return null;
-    //        var value = serializer.Deserialize<string>(reader);
-    //        switch (value)
-    //        {
-    //            case "MONDAY":
-    //                return Dayofweek.Monday;
-    //            case "TUESDAY":
-    //                return Dayofweek.Tuesday;
-    //        }
-    //        throw new Exception("Cannot unmarshal type Dayofweek");
-    //    }
-
-    //    public override void WriteJson(JsonWriter writer, object untypedValue, JsonSerializer serializer)
-    //    {
-    //        if (untypedValue == null)
-    //        {
-    //            serializer.Serialize(writer, null);
-    //            return;
-    //        }
-    //        var value = (Dayofweek)untypedValue;
-    //        switch (value)
-    //        {
-    //            case Dayofweek.Monday:
-    //                serializer.Serialize(writer, "MONDAY");
-    //                return;
-    //            case Dayofweek.Tuesday:
-    //                serializer.Serialize(writer, "TUESDAY");
-    //                return;
-    //        }
-    //        throw new Exception("Cannot marshal type Dayofweek");
-    //    }
-
-    //    public static readonly DayofweekConverter Singleton = new DayofweekConverter();
-    //}
-
-    internal class SuspectAgeConverter : JsonConverter
-    {
-        public override bool CanConvert(Type t) => t == typeof(SuspectAge) || t == typeof(SuspectAge?);
+        public override bool CanConvert(Type t) => t == typeof(Age) || t == typeof(Age?);
 
         public override object ReadJson(JsonReader reader, Type t, object existingValue, JsonSerializer serializer)
         {
@@ -291,19 +539,29 @@ namespace IncidentRecord
             switch (value)
             {
                 case "18-25":
-                    return SuspectAge.The1825;
+                    return Age.The1825;
+                case "26-30":
+                    return Age.The2630;
                 case "31-40":
-                    return SuspectAge.The3140;
+                    return Age.The3140;
                 case "41-50":
-                    return SuspectAge.The4150;
+                    return Age.The4150;
+                case "51-60":
+                    return Age.The5160;
+                case "61-70":
+                    return Age.The6170;
+                case "ADULT (18+)":
+                    return Age.Adult18;
+                case "JUVENILE (UNDER 18)":
+                    return Age.JuvenileUnder18;
                 case "OVER 70":
-                    return SuspectAge.Over70;
+                    return Age.Over70;
                 case "UNDER 18":
-                    return SuspectAge.Under18;
+                    return Age.Under18;
                 case "UNKNOWN":
-                    return SuspectAge.Unknown;
+                    return Age.Unknown;
             }
-            throw new Exception("Cannot unmarshal type SuspectAge");
+            throw new Exception("Cannot unmarshal type Age");
         }
 
         public override void WriteJson(JsonWriter writer, object untypedValue, JsonSerializer serializer)
@@ -313,32 +571,81 @@ namespace IncidentRecord
                 serializer.Serialize(writer, null);
                 return;
             }
-            var value = (SuspectAge)untypedValue;
+            var value = (Age)untypedValue;
             switch (value)
             {
-                case SuspectAge.The1825:
+                case Age.The1825:
                     serializer.Serialize(writer, "18-25");
                     return;
-                case SuspectAge.The3140:
+                case Age.The2630:
+                    serializer.Serialize(writer, "26-30");
+                    return;
+                case Age.The3140:
                     serializer.Serialize(writer, "31-40");
                     return;
-                case SuspectAge.The4150:
+                case Age.The4150:
                     serializer.Serialize(writer, "41-50");
                     return;
-                case SuspectAge.Over70:
+                case Age.The5160:
+                    serializer.Serialize(writer, "51-60");
+                    return;
+                case Age.The6170:
+                    serializer.Serialize(writer, "61-70");
+                    return;
+                case Age.Adult18:
+                    serializer.Serialize(writer, "ADULT (18+)");
+                    return;
+                case Age.JuvenileUnder18:
+                    serializer.Serialize(writer, "JUVENILE (UNDER 18)");
+                    return;
+                case Age.Over70:
                     serializer.Serialize(writer, "OVER 70");
                     return;
-                case SuspectAge.Under18:
+                case Age.Under18:
                     serializer.Serialize(writer, "UNDER 18");
                     return;
-                case SuspectAge.Unknown:
+                case Age.Unknown:
                     serializer.Serialize(writer, "UNKNOWN");
                     return;
             }
-            throw new Exception("Cannot marshal type SuspectAge");
+            throw new Exception("Cannot marshal type Age");
         }
 
-        public static readonly SuspectAgeConverter Singleton = new SuspectAgeConverter();
+        public static readonly AgeConverter Singleton = new AgeConverter();
+    }
+
+    internal class EthnicityConverter : JsonConverter
+    {
+        public override bool CanConvert(Type t) => t == typeof(Ethnicity) || t == typeof(Ethnicity?);
+
+        public override object ReadJson(JsonReader reader, Type t, object existingValue, JsonSerializer serializer)
+        {
+            if (reader.TokenType == JsonToken.Null) return null;
+            var value = serializer.Deserialize<string>(reader);
+            if (value == "NOT OF HISPANIC ORIG")
+            {
+                return Ethnicity.NotOfHispanicOrig;
+            }
+            throw new Exception("Cannot unmarshal type Ethnicity");
+        }
+
+        public override void WriteJson(JsonWriter writer, object untypedValue, JsonSerializer serializer)
+        {
+            if (untypedValue == null)
+            {
+                serializer.Serialize(writer, null);
+                return;
+            }
+            var value = (Ethnicity)untypedValue;
+            if (value == Ethnicity.NotOfHispanicOrig)
+            {
+                serializer.Serialize(writer, "NOT OF HISPANIC ORIG");
+                return;
+            }
+            throw new Exception("Cannot marshal type Ethnicity");
+        }
+
+        public static readonly EthnicityConverter Singleton = new EthnicityConverter();
     }
 
     internal class GenderConverter : JsonConverter
@@ -397,8 +704,20 @@ namespace IncidentRecord
             var value = serializer.Deserialize<string>(reader);
             switch (value)
             {
+                case "23C-SHOPLIFTING":
+                    return TheftCode.The23CShoplifting;
+                case "23D-THEFT FROM BUILDING":
+                    return TheftCode.The23DTheftFromBuilding;
+                case "23E-THEFT FROM COIN-OPERATED MACHINE OR DEVICE":
+                    return TheftCode.The23ETheftFromCoinOperatedMachineOrDevice;
                 case "23F-THEFT FROM MOTOR VEHICLE":
                     return TheftCode.The23FTheftFromMotorVehicle;
+                case "23G-THEFT OF MOTOR VEHICLE PARTS OR ACCESSORIES":
+                    return TheftCode.The23GTheftOfMotorVehiclePartsOrAccessories;
+                case "23H-ALL OTHER LARCENY":
+                    return TheftCode.The23HAllOtherLarceny;
+                case "24I-THEFT OF LICENSE PLATE":
+                    return TheftCode.The24ITheftOfLicensePlate;
                 case "24O-MOTOR VEHICLE THEFT":
                     return TheftCode.The24OMotorVehicleTheft;
             }
@@ -415,8 +734,26 @@ namespace IncidentRecord
             var value = (TheftCode)untypedValue;
             switch (value)
             {
+                case TheftCode.The23CShoplifting:
+                    serializer.Serialize(writer, "23C-SHOPLIFTING");
+                    return;
+                case TheftCode.The23DTheftFromBuilding:
+                    serializer.Serialize(writer, "23D-THEFT FROM BUILDING");
+                    return;
+                case TheftCode.The23ETheftFromCoinOperatedMachineOrDevice:
+                    serializer.Serialize(writer, "23E-THEFT FROM COIN-OPERATED MACHINE OR DEVICE");
+                    return;
                 case TheftCode.The23FTheftFromMotorVehicle:
                     serializer.Serialize(writer, "23F-THEFT FROM MOTOR VEHICLE");
+                    return;
+                case TheftCode.The23GTheftOfMotorVehiclePartsOrAccessories:
+                    serializer.Serialize(writer, "23G-THEFT OF MOTOR VEHICLE PARTS OR ACCESSORIES");
+                    return;
+                case TheftCode.The23HAllOtherLarceny:
+                    serializer.Serialize(writer, "23H-ALL OTHER LARCENY");
+                    return;
+                case TheftCode.The24ITheftOfLicensePlate:
+                    serializer.Serialize(writer, "24I-THEFT OF LICENSE PLATE");
                     return;
                 case TheftCode.The24OMotorVehicleTheft:
                     serializer.Serialize(writer, "24O-MOTOR VEHICLE THEFT");
@@ -438,14 +775,22 @@ namespace IncidentRecord
             var value = serializer.Deserialize<string>(reader);
             switch (value)
             {
+                case "AGGRAVATED ASSAULTS":
+                    return UcrGroup.AggravatedAssaults;
                 case "BURGLARY/BREAKING ENTERING":
                     return UcrGroup.BurglaryBreakingEntering;
+                case "HOMICIDE":
+                    return UcrGroup.Homicide;
                 case "PART 2 MINOR":
                     return UcrGroup.Part2Minor;
+                case "RAPE":
+                    return UcrGroup.Rape;
                 case "ROBBERY":
                     return UcrGroup.Robbery;
                 case "THEFT":
                     return UcrGroup.Theft;
+                case "UNAUTHORIZED USE":
+                    return UcrGroup.UnauthorizedUse;
             }
             throw new Exception("Cannot unmarshal type UcrGroup");
         }
@@ -460,17 +805,29 @@ namespace IncidentRecord
             var value = (UcrGroup)untypedValue;
             switch (value)
             {
+                case UcrGroup.AggravatedAssaults:
+                    serializer.Serialize(writer, "AGGRAVATED ASSAULTS");
+                    return;
                 case UcrGroup.BurglaryBreakingEntering:
                     serializer.Serialize(writer, "BURGLARY/BREAKING ENTERING");
                     return;
+                case UcrGroup.Homicide:
+                    serializer.Serialize(writer, "HOMICIDE");
+                    return;
                 case UcrGroup.Part2Minor:
                     serializer.Serialize(writer, "PART 2 MINOR");
+                    return;
+                case UcrGroup.Rape:
+                    serializer.Serialize(writer, "RAPE");
                     return;
                 case UcrGroup.Robbery:
                     serializer.Serialize(writer, "ROBBERY");
                     return;
                 case UcrGroup.Theft:
                     serializer.Serialize(writer, "THEFT");
+                    return;
+                case UcrGroup.UnauthorizedUse:
+                    serializer.Serialize(writer, "UNAUTHORIZED USE");
                     return;
             }
             throw new Exception("Cannot marshal type UcrGroup");
@@ -489,10 +846,28 @@ namespace IncidentRecord
             var value = serializer.Deserialize<string>(reader);
             switch (value)
             {
+                case "11 - FIREARM (TYPE NOT STATED)":
+                    return Weapons.The11FirearmTypeNotStated;
                 case "12 - HANDGUN":
                     return Weapons.The12Handgun;
+                case "12A - AUTOMATIC HANDGUN":
+                    return Weapons.The12AAutomaticHandgun;
+                case "14 - SHOTGUN":
+                    return Weapons.The14Shotgun;
+                case "18 - BB AND PELLET GUNS":
+                    return Weapons.The18BbAndPelletGuns;
+                case "20 - KNIFE/CUTTING INSTRUMENT (ICEPICK, AX, ETC.)":
+                    return Weapons.The20KnifeCuttingInstrumentIcepickAxEtc;
+                case "30 - BLUNT OBJECT (CLUB, HAMMER, ETC.)":
+                    return Weapons.The30BluntObjectClubHammerEtc;
+                case "35 - MOTOR VEHICLE (WHEN USED AS WEAPON)":
+                    return Weapons.The35MotorVehicleWhenUsedAsWeapon;
                 case "40 - PERSONAL WEAPONS (HANDS, FEET, TEETH, ETC.)":
                     return Weapons.The40PersonalWeaponsHandsFeetTeethEtc;
+                case "80 - OTHER WEAPON":
+                    return Weapons.The80OtherWeapon;
+                case "85 - ASPHYXIATION (BY DROWNING, STRANGULATION, SUFFOCATION)":
+                    return Weapons.The85AsphyxiationByDrowningStrangulationSuffocation;
                 case "99 - NONE":
                     return Weapons.The99None;
                 case "U - UNKNOWN":
@@ -511,11 +886,38 @@ namespace IncidentRecord
             var value = (Weapons)untypedValue;
             switch (value)
             {
+                case Weapons.The11FirearmTypeNotStated:
+                    serializer.Serialize(writer, "11 - FIREARM (TYPE NOT STATED)");
+                    return;
                 case Weapons.The12Handgun:
                     serializer.Serialize(writer, "12 - HANDGUN");
                     return;
+                case Weapons.The12AAutomaticHandgun:
+                    serializer.Serialize(writer, "12A - AUTOMATIC HANDGUN");
+                    return;
+                case Weapons.The14Shotgun:
+                    serializer.Serialize(writer, "14 - SHOTGUN");
+                    return;
+                case Weapons.The18BbAndPelletGuns:
+                    serializer.Serialize(writer, "18 - BB AND PELLET GUNS");
+                    return;
+                case Weapons.The20KnifeCuttingInstrumentIcepickAxEtc:
+                    serializer.Serialize(writer, "20 - KNIFE/CUTTING INSTRUMENT (ICEPICK, AX, ETC.)");
+                    return;
+                case Weapons.The30BluntObjectClubHammerEtc:
+                    serializer.Serialize(writer, "30 - BLUNT OBJECT (CLUB, HAMMER, ETC.)");
+                    return;
+                case Weapons.The35MotorVehicleWhenUsedAsWeapon:
+                    serializer.Serialize(writer, "35 - MOTOR VEHICLE (WHEN USED AS WEAPON)");
+                    return;
                 case Weapons.The40PersonalWeaponsHandsFeetTeethEtc:
                     serializer.Serialize(writer, "40 - PERSONAL WEAPONS (HANDS, FEET, TEETH, ETC.)");
+                    return;
+                case Weapons.The80OtherWeapon:
+                    serializer.Serialize(writer, "80 - OTHER WEAPON");
+                    return;
+                case Weapons.The85AsphyxiationByDrowningStrangulationSuffocation:
+                    serializer.Serialize(writer, "85 - ASPHYXIATION (BY DROWNING, STRANGULATION, SUFFOCATION)");
                     return;
                 case Weapons.The99None:
                     serializer.Serialize(writer, "99 - NONE");
