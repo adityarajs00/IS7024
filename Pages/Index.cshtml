@@ -1,10 +1,44 @@
-﻿@page
+@page
+@using IncidentRecord;
+@using CallsForService;
 @model IndexModel
 @{
     ViewData["Title"] = "Home page";
+    List<Calls> cls = (List<Calls>)ViewData["Services"];
+    List <Incidents> incident = (List<Incidents>) ViewData["Incidents"];
+
 }
 
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    
 </div>
+@foreach(Calls cl in cls)
+    {
+        <h3>@cl.CpdNeighborhood</h3>
+    }
+<table>
+    <tr>
+        <th>Instance Id</th>
+        <th>Incident No</th>
+        <th>Date Reported</th>
+        <th>Date From</th>
+        <th>Ucr</th>
+    </tr>
+   
+    @{
+        foreach (Incidents incidents in incident)
+        {
+            <tr>
+                <td>@incidents.Instanceid</td>
+                <td>@incidents.IncidentNo</td>
+                <td>@incidents.DateReported</td>
+                <td>@incidents.DateFrom</td>
+                <td>@incidents.Ucr</td>
+            </tr>
+        }
+    }
+   
+</table>
+
