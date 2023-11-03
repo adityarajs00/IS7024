@@ -11,15 +11,9 @@ namespace Neighborhood_Watch.Pages
     {
         static readonly HttpClient client = new HttpClient();
         private readonly ILogger<IndexModel> _logger;
-        public IndexModel(ILogger<IndexModel> logger)
-        {
-            _logger = logger;
-        }
 
         public void OnGet()
         {
-
-
             Task<List<Incidents>> incidents = GetIncidentsData();
             List<Incidents> incident = incidents.Result;
             ViewData["Incidents"] = incident;
@@ -80,29 +74,29 @@ namespace Neighborhood_Watch.Pages
                 Task<string> readString = result.Content.ReadAsStringAsync();
                 string incidentJson = readString.Result;
                 incident = Incidents.FromJson(incidentJson);
-                
+
                 //Joining the data sets
-                //Task<HttpResponseMessage> test_response = client.GetAsync("https://data.cincinnati-oh.gov/resource/k59e-2pvf.json");
-                //HttpResponseMessage Test_Response = await test_response;
-                //Task<string> ResponseStringTask = Test_Response.Content.ReadAsStringAsync();
-                //string Response_Test_Json = ResponseStringTask.Result;
-                //List<Responses> test_responses_1 = Responses.FromJson(Response_Test_Json);
+                /*Task<HttpResponseMessage> test_response = client.GetAsync("https://data.cincinnati-oh.gov/resource/k59e-2pvf.json");
+                HttpResponseMessage Test_Response = await test_response;
+                Task<string> ResponseStringTask = Test_Response.Content.ReadAsStringAsync();
+                string Response_Test_Json = ResponseStringTask.Result;
+                List<Responses> test_responses_1 = Responses.FromJson(Response_Test_Json);
 
-                //IDictionary<string, Responses> cpdneighbourhood = new Dictionary<string, Responses>();
-                //foreach (Responses t_response in test_responses_1)
-                //{
-                //    cpdneighbourhood[t_response.CpdNeighborhood] = t_response;
-                //}
-                //List<Incidents> test_incidents = new List<Incidents>();
-                //foreach (Incidents t_incidents in incident)
-                //{
-                //    if (cpdneighbourhood.ContainsKey(t_incidents.CpdNeighborhood))
-                //    {
-                //        test_incidents.Add(t_incidents);
-                //    }
-                //}
-
-                //return test_incidents;
+                IDictionary<string, Responses> cpdneighbourhood = new Dictionary<string, Responses>();
+                foreach (Responses t_response in test_responses_1)
+                {
+                    cpdneighbourhood[t_response.CpdNeighborhood] = t_response;
+                }
+                List<Incidents> test_incidents = new List<Incidents>();
+                foreach (Incidents t_incidents in incident)
+                {
+                    if (cpdneighbourhood.ContainsKey(t_incidents.CpdNeighborhood))
+                    {
+                        test_incidents.Add(t_incidents);
+                    }
+                }
+                
+                return test_incidents;*/
                 return incident;
             }
 
