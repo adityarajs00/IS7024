@@ -16,7 +16,7 @@ namespace Neighborhood_Watch.Pages
         public void OnGet()
         {
 
-            Task<List<Calls>> Services = GetIncidentsData();
+            Task<List<Calls>> Services = GetCallsData();
             List<Calls> Service = Services.Result;
             ViewData["Services"] = Service;
 
@@ -45,7 +45,7 @@ namespace Neighborhood_Watch.Pages
            */
 
         }
-        private async Task<List<Calls>> GetIncidentsData()
+        private async Task<List<Calls>> GetCallsData()
         {
             List<Calls> Services = new List<Calls>();
             return await Task.Run(async () =>
