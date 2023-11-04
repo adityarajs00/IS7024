@@ -21,31 +21,9 @@ namespace Neighborhood_Watch.Pages
             Task<List<Calls>> Services = GetCallsData();
             List<Calls> Service = Services.Result;
             ViewData["Services"] = Service;
-   
 
-            /*var task = client.GetAsync("https://data.cincinnati-oh.gov/resource/k59e-2pvf.json");
-            HttpResponseMessage result = task.Result;
-            List<Incidents> incident = new List<Incidents>();
-            if (result.IsSuccessStatusCode)
-            {
-                Task<string> readString = result.Content.ReadAsStringAsync();
-                string incidentJson = readString.Result;
-                incident = Incidents.FromJson(incidentJson);
-            }
-            ViewData["Incidents"] = incident;*/
-
-            /*Task<HttpResponseMessage> task = HttpClient.GetAsync("");
-            HttpResponseMessage response = task.Result;
- 
-            List<Record> records = new List<Record>();
- 
-            if (response != null)
-            {
-                Task<string> readString = response.Content.ReadAsStringAsync();
-                string recordJson = readString.Result;
-                records = records.FromJson(recordJson); 
-            }
-           */
+            List<X> derivedList = MergeData(Service, incident);
+            ViewData["derivedList"] = derivedList;
 
         }
 
@@ -59,6 +37,7 @@ namespace Neighborhood_Watch.Pages
                 Task<string> readString = result.Content.ReadAsStringAsync();
                 string ServicesJson = readString.Result;
                 Services = Calls.FromJson(ServicesJson);
+
                 return Services;
             }
 
@@ -75,33 +54,41 @@ namespace Neighborhood_Watch.Pages
                 string incidentJson = readString.Result;
                 incident = Incidents.FromJson(incidentJson);
 
-                //Joining the data sets
-                /*Task<HttpResponseMessage> test_response = client.GetAsync("https://data.cincinnati-oh.gov/resource/k59e-2pvf.json");
-                HttpResponseMessage Test_Response = await test_response;
-                Task<string> ResponseStringTask = Test_Response.Content.ReadAsStringAsync();
-                string Response_Test_Json = ResponseStringTask.Result;
-                List<Responses> test_responses_1 = Responses.FromJson(Response_Test_Json);
-
-                IDictionary<string, Responses> cpdneighbourhood = new Dictionary<string, Responses>();
-                foreach (Responses t_response in test_responses_1)
-                {
-                    cpdneighbourhood[t_response.CpdNeighborhood] = t_response;
-                }
-                List<Incidents> test_incidents = new List<Incidents>();
-                foreach (Incidents t_incidents in incident)
-                {
-                    if (cpdneighbourhood.ContainsKey(t_incidents.CpdNeighborhood))
-                    {
-                        test_incidents.Add(t_incidents);
-                    }
-                }
-                
-                return test_incidents;*/
                 return incident;
             }
 
                 );
         }
-       
+
+        private List<X> MergeData(List<Calls> services, List<Incidents> incident)
+        {
+
+            IDictionary<string, Incidents> cpdneighbourhood = new Dictionary <string, Incidents>();
+            
+            foreach (Incidents i in incident)
+            {
+                if (i.CpdNeighborhood != null)
+                {
+                    cpdneighbourhood[i.CpdNeighborhood] = i;
+                }
+            }
+
+            IDictionary<string,List<X>> x = new IDictionary<string, List<X>>();
+
+            foreach (Calls j in services)
+            {
+                if (cpdneighbourhood.ContainsKey(j.CpdNeighborhood))
+                {
+                    X temp = new X();   
+                    temp.IncidentTypeDesc = j.IncidentTypeDesc;
+                    temp.IncidentNo = j.District;
+;                    temp.Instanceid = cpdneighbourhood[j.CpdNeighborhood].Instanceid;
+                    x.Add(temp);
+                }
+            }
+
+            return x;
+        }
+
     }
 }
