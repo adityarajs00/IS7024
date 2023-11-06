@@ -24,14 +24,17 @@ namespace IncidentRecord
         [JsonConverter(typeof(ParseStringConverter))]
         public long IncidentNo { get; set; }
 
-        [JsonProperty("date_reported")]
-        public DateTimeOffset DateReported { get; set; }
+        [JsonProperty("date_reported", NullValueHandling = NullValueHandling.Ignore)]
+        public DateTimeOffset? DateReported { get; set; }
 
         [JsonProperty("date_from")]
         public DateTimeOffset DateFrom { get; set; }
 
         [JsonProperty("date_to")]
         public DateTimeOffset DateTo { get; set; }
+
+        [JsonProperty("clsd", NullValueHandling = NullValueHandling.Ignore)]
+        public Clsd? Clsd { get; set; }
 
         [JsonProperty("ucr", NullValueHandling = NullValueHandling.Ignore)]
         [JsonConverter(typeof(ParseStringConverter))]
@@ -46,17 +49,24 @@ namespace IncidentRecord
         [JsonProperty("offense", NullValueHandling = NullValueHandling.Ignore)]
         public string Offense { get; set; }
 
-        [JsonProperty("location", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("location")]
         public string Location { get; set; }
-
-        [JsonProperty("theft_code", NullValueHandling = NullValueHandling.Ignore)]
-        public TheftCode? TheftCode { get; set; }
 
         [JsonProperty("dayofweek")]
         public Dayofweek Dayofweek { get; set; }
 
+        [JsonProperty("rpt_area", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonConverter(typeof(ParseStringConverter))]
+        public long? RptArea { get; set; }
+
+        [JsonProperty("cpd_neighborhood", NullValueHandling = NullValueHandling.Ignore)]
+        public string CpdNeighborhood { get; set; }
+
         [JsonProperty("weapons", NullValueHandling = NullValueHandling.Ignore)]
         public Weapons? Weapons { get; set; }
+
+        [JsonProperty("date_of_clearance", NullValueHandling = NullValueHandling.Ignore)]
+        public DateTimeOffset? DateOfClearance { get; set; }
 
         [JsonProperty("hour_from")]
         public string HourFrom { get; set; }
@@ -82,9 +92,6 @@ namespace IncidentRecord
         [JsonProperty("suspect_age")]
         public Age SuspectAge { get; set; }
 
-        [JsonProperty("suspect_gender", NullValueHandling = NullValueHandling.Ignore)]
-        public Gender? SuspectGender { get; set; }
-
         [JsonProperty("ucr_group", NullValueHandling = NullValueHandling.Ignore)]
         public UcrGroup? UcrGroup { get; set; }
 
@@ -98,17 +105,11 @@ namespace IncidentRecord
         [JsonProperty("sna_neighborhood")]
         public string SnaNeighborhood { get; set; }
 
-        [JsonProperty("clsd", NullValueHandling = NullValueHandling.Ignore)]
-        public Clsd? Clsd { get; set; }
+        [JsonProperty("theft_code", NullValueHandling = NullValueHandling.Ignore)]
+        public TheftCode? TheftCode { get; set; }
 
-        [JsonProperty("rpt_area", NullValueHandling = NullValueHandling.Ignore)]
-        public string RptArea { get; set; }
-
-        [JsonProperty("cpd_neighborhood", NullValueHandling = NullValueHandling.Ignore)]
-        public string CpdNeighborhood { get; set; }
-
-        [JsonProperty("date_of_clearance", NullValueHandling = NullValueHandling.Ignore)]
-        public DateTimeOffset? DateOfClearance { get; set; }
+        [JsonProperty("suspect_gender", NullValueHandling = NullValueHandling.Ignore)]
+        public Gender? SuspectGender { get; set; }
 
         [JsonProperty("victim_ethnicity", NullValueHandling = NullValueHandling.Ignore)]
         public Ethnicity? VictimEthnicity { get; set; }
@@ -135,15 +136,15 @@ namespace IncidentRecord
 
     public enum Age { Adult18, JuvenileUnder18, Over70, The1825, The2630, The3140, The4150, The5160, The6170, Under18, Unknown };
 
-    public enum Ethnicity { NotOfHispanicOrig };
+    public enum Ethnicity { HispanicOrigin, NotOfHispanicOrig };
 
     public enum Gender { Female, Male, Unknown };
 
-    public enum TheftCode { The23CShoplifting, The23DTheftFromBuilding, The23ETheftFromCoinOperatedMachineOrDevice, The23FTheftFromMotorVehicle, The23GTheftOfMotorVehiclePartsOrAccessories, The23HAllOtherLarceny, The24ITheftOfLicensePlate, The24OMotorVehicleTheft };
+    public enum TheftCode { The23CShoplifting, The23DTheftFromBuilding, The23FTheftFromMotorVehicle, The23GTheftOfMotorVehiclePartsOrAccessories, The23HAllOtherLarceny, The24ITheftOfLicensePlate, The24OMotorVehicleTheft };
 
     public enum UcrGroup { AggravatedAssaults, BurglaryBreakingEntering, Homicide, Part2Minor, Rape, Robbery, Theft, UnauthorizedUse };
 
-    public enum Weapons { The11FirearmTypeNotStated, The12AAutomaticHandgun, The12Handgun, The14Shotgun, The18BbAndPelletGuns, The20KnifeCuttingInstrumentIcepickAxEtc, The30BluntObjectClubHammerEtc, The35MotorVehicleWhenUsedAsWeapon, The40PersonalWeaponsHandsFeetTeethEtc, The80OtherWeapon, The85AsphyxiationByDrowningStrangulationSuffocation, The99None, UUnknown };
+    public enum Weapons { The11FirearmTypeNotStated, The12AAutomaticHandgun, The12Handgun, The13Rifle, The14Shotgun, The18BbAndPelletGuns, The20KnifeCuttingInstrumentIcepickAxEtc, The30BluntObjectClubHammerEtc, The40PersonalWeaponsHandsFeetTeethEtc, The60Explosives, The80OtherWeapon, The85AsphyxiationByDrowningStrangulationSuffocation, The99None, UUnknown };
 
     public partial struct BeatUnion
     {
@@ -622,9 +623,12 @@ namespace IncidentRecord
         {
             if (reader.TokenType == JsonToken.Null) return null;
             var value = serializer.Deserialize<string>(reader);
-            if (value == "NOT OF HISPANIC ORIG")
+            switch (value)
             {
-                return Ethnicity.NotOfHispanicOrig;
+                case "HISPANIC ORIGIN":
+                    return Ethnicity.HispanicOrigin;
+                case "NOT OF HISPANIC ORIG":
+                    return Ethnicity.NotOfHispanicOrig;
             }
             throw new Exception("Cannot unmarshal type Ethnicity");
         }
@@ -637,10 +641,14 @@ namespace IncidentRecord
                 return;
             }
             var value = (Ethnicity)untypedValue;
-            if (value == Ethnicity.NotOfHispanicOrig)
+            switch (value)
             {
-                serializer.Serialize(writer, "NOT OF HISPANIC ORIG");
-                return;
+                case Ethnicity.HispanicOrigin:
+                    serializer.Serialize(writer, "HISPANIC ORIGIN");
+                    return;
+                case Ethnicity.NotOfHispanicOrig:
+                    serializer.Serialize(writer, "NOT OF HISPANIC ORIG");
+                    return;
             }
             throw new Exception("Cannot marshal type Ethnicity");
         }
@@ -708,8 +716,6 @@ namespace IncidentRecord
                     return TheftCode.The23CShoplifting;
                 case "23D-THEFT FROM BUILDING":
                     return TheftCode.The23DTheftFromBuilding;
-                case "23E-THEFT FROM COIN-OPERATED MACHINE OR DEVICE":
-                    return TheftCode.The23ETheftFromCoinOperatedMachineOrDevice;
                 case "23F-THEFT FROM MOTOR VEHICLE":
                     return TheftCode.The23FTheftFromMotorVehicle;
                 case "23G-THEFT OF MOTOR VEHICLE PARTS OR ACCESSORIES":
@@ -739,9 +745,6 @@ namespace IncidentRecord
                     return;
                 case TheftCode.The23DTheftFromBuilding:
                     serializer.Serialize(writer, "23D-THEFT FROM BUILDING");
-                    return;
-                case TheftCode.The23ETheftFromCoinOperatedMachineOrDevice:
-                    serializer.Serialize(writer, "23E-THEFT FROM COIN-OPERATED MACHINE OR DEVICE");
                     return;
                 case TheftCode.The23FTheftFromMotorVehicle:
                     serializer.Serialize(writer, "23F-THEFT FROM MOTOR VEHICLE");
@@ -852,6 +855,8 @@ namespace IncidentRecord
                     return Weapons.The12Handgun;
                 case "12A - AUTOMATIC HANDGUN":
                     return Weapons.The12AAutomaticHandgun;
+                case "13 - RIFLE":
+                    return Weapons.The13Rifle;
                 case "14 - SHOTGUN":
                     return Weapons.The14Shotgun;
                 case "18 - BB AND PELLET GUNS":
@@ -860,10 +865,10 @@ namespace IncidentRecord
                     return Weapons.The20KnifeCuttingInstrumentIcepickAxEtc;
                 case "30 - BLUNT OBJECT (CLUB, HAMMER, ETC.)":
                     return Weapons.The30BluntObjectClubHammerEtc;
-                case "35 - MOTOR VEHICLE (WHEN USED AS WEAPON)":
-                    return Weapons.The35MotorVehicleWhenUsedAsWeapon;
                 case "40 - PERSONAL WEAPONS (HANDS, FEET, TEETH, ETC.)":
                     return Weapons.The40PersonalWeaponsHandsFeetTeethEtc;
+                case "60 - EXPLOSIVES":
+                    return Weapons.The60Explosives;
                 case "80 - OTHER WEAPON":
                     return Weapons.The80OtherWeapon;
                 case "85 - ASPHYXIATION (BY DROWNING, STRANGULATION, SUFFOCATION)":
@@ -895,6 +900,9 @@ namespace IncidentRecord
                 case Weapons.The12AAutomaticHandgun:
                     serializer.Serialize(writer, "12A - AUTOMATIC HANDGUN");
                     return;
+                case Weapons.The13Rifle:
+                    serializer.Serialize(writer, "13 - RIFLE");
+                    return;
                 case Weapons.The14Shotgun:
                     serializer.Serialize(writer, "14 - SHOTGUN");
                     return;
@@ -907,11 +915,11 @@ namespace IncidentRecord
                 case Weapons.The30BluntObjectClubHammerEtc:
                     serializer.Serialize(writer, "30 - BLUNT OBJECT (CLUB, HAMMER, ETC.)");
                     return;
-                case Weapons.The35MotorVehicleWhenUsedAsWeapon:
-                    serializer.Serialize(writer, "35 - MOTOR VEHICLE (WHEN USED AS WEAPON)");
-                    return;
                 case Weapons.The40PersonalWeaponsHandsFeetTeethEtc:
                     serializer.Serialize(writer, "40 - PERSONAL WEAPONS (HANDS, FEET, TEETH, ETC.)");
+                    return;
+                case Weapons.The60Explosives:
+                    serializer.Serialize(writer, "60 - EXPLOSIVES");
                     return;
                 case Weapons.The80OtherWeapon:
                     serializer.Serialize(writer, "80 - OTHER WEAPON");

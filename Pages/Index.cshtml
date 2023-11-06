@@ -6,14 +6,14 @@
     ViewData["Title"] = "Home page";
     List<Calls> cls = (List<Calls>)ViewData["Services"];
     List <Incidents> incident = (List<Incidents>) ViewData["Incidents"];
-    List<X> derivedList = (List<X>)ViewData["derivedList"];
+    // List<X> derivedList = (List<X>)ViewData["derivedList"];
 
 }
 
 <div class="text-center">
     <h1 class="display-4">Neighborhood Watch</h1>    
 </div>
-<table>
+@* <table>
     <tr>
         <th>Instance Number</th>
         <th>Incident type</th>
@@ -32,4 +32,32 @@
     }
    
 </table>
+ *@
+ 
+@foreach (Calls cl in cls)
+{
+    <h3>@cl.CpdNeighborhood</h3>
+}
+<table>
+    <tr>
+        <th>Instance Id</th>
+        <th>Incident No</th>
+        <th>Date Reported</th>
+        <th>Date From</th>
+        <th>Ucr</th>
+    </tr>
 
+    @{
+        foreach (Incidents incidents in incident)
+        {
+            <tr>
+                <td>@incidents.Instanceid</td>
+                <td>@incidents.IncidentNo</td>
+                <td>@incidents.DateReported</td>
+                <td>@incidents.DateFrom</td>
+                <td>@incidents.Ucr</td>
+            </tr>
+        }
+    }
+
+</table>
