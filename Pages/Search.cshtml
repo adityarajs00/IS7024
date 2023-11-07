@@ -1,0 +1,60 @@
+﻿@page
+@model Neighborhood_Watch.Pages.SearchModel
+@{
+    <style>
+        /* Add custom CSS styles for the form and search results */
+        .search-form {
+            text-align: center;
+            margin: 20px;
+        }
+
+        .search-input {
+            padding: 10px;
+            border: 2px solid #f2ca38;
+            background-color: black;
+            color: #f2ca38;
+            border-radius: 5px;
+            width: 250px;
+        }
+
+        .search-button {
+            background-color: #f2ca38;
+            color: black;
+            border: 2px solid #f2ca386;
+            padding: 10px 20px;
+            border-radius: 5px;
+        }
+
+        .search-results {
+            text-align: center;
+            margin: 20px;
+        }
+
+        .search-result-item {
+            list-style: none;
+            color: #f2ca38;
+            background-color: black;
+            padding: 10px;
+            margin: 5px;
+            border-radius: 5px;
+        }
+    </style>
+}
+
+<form class="search-form" method="get">
+    <input class="search-input" type="text" name="searchTerm" placeholder="Search..." />
+    <button class="search-button" type="submit">Search</button>
+</form>
+
+@if (Model.SearchResults != null)
+{
+    <div class="search-results">
+        <h3>Search Results:</h3>
+        <ul>
+            @foreach (var result in Model.SearchResults)
+            {
+                <li class="search-result-item">@result</li>
+            }
+        </ul>
+    </div>
+}

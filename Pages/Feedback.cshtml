@@ -1,9 +1,21 @@
 ﻿@page
 @model PrivacyModel
 @{
-    ViewData["Title"] = "Privacy Policy";
+    ViewData["Title"] = "Feedback";
 }
-<h1>@ViewData["Title"]</h1>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Neighborhood_Watch</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/Neighborhood_Watch.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700|Poppins:400,600,700&display=swap" rel="stylesheet" />
+    <link href="css/style.css" rel="stylesheet" />
+    <link href="css/responsive.css" rel="stylesheet" />
+</head>
+
 <section class="contact_section layout_padding">
     <div class="contact_bg_box">
         <div class="img-box">
@@ -13,7 +25,7 @@
     <div class="container">
         <div class="heading_container heading_center">
             <h2>
-                Get In touch
+                Let us know about your neighborhood
             </h2>
         </div>
         <div class="">
@@ -26,17 +38,31 @@
                                     <input type="text" placeholder="Full Name" />
                                 </div>
                                 <div>
-                                    <input type="email" placeholder="Email " />
+                                    <input type="email" placeholder="Email" />
                                 </div>
                                 <div>
                                     <input type="text" placeholder="Phone Number" />
                                 </div>
-                                <div class="">
-                                    <input type="text" placeholder="Message" class="message_input" />
+                                <div>
+                                    <input type="text" placeholder="Address" />
                                 </div>
-                                <div class="btn-box ">
+                                <div>
+                                    <select class="neighborhood_dropdown">
+                                        <option value="" disabled selected>Select Neighborhood</option>
+                                        <option value="neighborhood1">Neighborhood 1</option>
+                                        <option value="neighborhood2">Neighborhood 2</option>
+                                    </select>
+                                </div>  
+                                <div class="slidecontainer">
+                                    <input type="range" class="slider" min="0" max="10" step="1" value="5" id="safety_rating">
+                                    <label for="safety_rating">Safety Rating: <span id="safety_rating_value">5</span></label>
+                                </div>
+                                <div>
+                                    <input type="text" placeholder="Comments" class="message_input" />
+                                </div>
+                                <div class="btn-box">
                                     <button type="submit">
-                                        Send
+                                        Submit
                                     </button>
                                 </div>
                             </div>
@@ -47,3 +73,10 @@
         </div>
     </div>
 </section>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>
+<script src="js/jquery-3.4.1.min.js"></script>
+<script src="js/bootstrap.js"></script>
+<script src="js/custom.js"></script>
