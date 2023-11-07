@@ -17,7 +17,7 @@ Yash Shukla
  
  
 ## Icon
-<img src="NW%20(2).png" alt="Neighborhood Watch Logo" style="width:200px;"/>
+<img src="NW (2).png" alt="Neighborhood Watch Logo" style="width:200px;"/>
  
 ## Introduction
 You are new to Cincinnati, you need advice on which neighborhood to live in. Who do you turn to? *Neighborhood Watch* is an application that filters safe neighborhoods based on crime statistics provided by the police department.
