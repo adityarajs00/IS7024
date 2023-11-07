@@ -6,8 +6,6 @@
     ViewData["Title"] = "Home page";
     List<Calls> cls = (List<Calls>)ViewData["Services"];
     List <Incidents> incident = (List<Incidents>) ViewData["Incidents"];
-    // List<X> derivedList = (List<X>)ViewData["derivedList"];
-
 }
 <head>
     <meta charset="utf-8" />
@@ -25,26 +23,6 @@
 <div class="text-center">
     <h1 class="display-4">Neighborhood Watch</h1>    
 </div>
-@* <table>
-    <tr>
-        <th>Instance Number</th>
-        <th>Incident type</th>
-        <th>Id</th>
-            </tr>
-   
-    @{
-        foreach (X dl in derivedList)
-        {
-            <tr>
-                <td>@dl.IncidentNo</td>
-                <td>@dl.IncidentTypeDesc</td>
-                <td>@dl.Instanceid</td>
-            </tr>
-        }
-    }
-   
-</table>
- *@
  
 @*@foreach (Calls cl in cls)
 {
@@ -73,7 +51,6 @@
     }
 
 </table>*@
-
 
 
 @if (Model.SearchResults != null)
