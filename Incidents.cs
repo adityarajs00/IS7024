@@ -124,6 +124,7 @@ namespace IncidentRecord
         [JsonProperty("totalsuspects", NullValueHandling = NullValueHandling.Ignore)]
         [JsonConverter(typeof(ParseStringConverter))]
         public long? Totalsuspects { get; set; }
+        public object YourProperty { get; internal set; }
     }
 
     public enum BeatEnum { CentralBusinessSection };

@@ -10,21 +10,21 @@ namespace Neighborhood_Watch.Pages
 {
     public class IndexModel : PageModel
     {
+        List<Calls> Service = new List<Calls>();
+        List<Incidents> incident = new List<Incidents>();
+
         static readonly HttpClient client = new HttpClient();
         private readonly ILogger<IndexModel> _logger;
 
         public async Task OnGetAsync()
         {
             Task<List<Incidents>> incidents = GetIncidentsData();
-            List<Incidents> incident = incidents.Result;
+            incident = incidents.Result;
             ViewData["Incidents"] = incident;
             
             Task<List<Calls>> Services = GetCallsData();
-            List<Calls> Service = Services.Result;
+            Service = Services.Result;
             ViewData["Services"] = Service;
-
-            //List<X> derivedList = MergeData(Service, incident);
-            //ViewData["derivedList"] = derivedList;
 
             if (!string.IsNullOrEmpty(SearchTerm))
             {
@@ -81,36 +81,6 @@ namespace Neighborhood_Watch.Pages
 
                 );
         }
-
-        //private List<X> MergeData(List<Calls> services, List<Incidents> incident)
-        //{
-
-        //    IDictionary<string, Incidents> cpdneighbourhood = new Dictionary<string, Incidents>();
-
-        //    foreach (Incidents i in incident)
-        //    {
-        //        if (i.CpdNeighborhood != null)
-        //        {
-        //            cpdneighbourhood[i.CpdNeighborhood] = i;
-        //        }
-        //    }
-
-        //    IDictionary<string, List<X>> x = new IDictionary<string, List<X>>();
-
-        //    foreach (Calls j in services)
-        //    {
-        //        if (cpdneighbourhood.ContainsKey(j.CpdNeighborhood))
-        //        {
-        //            X temp = new X();
-        //            temp.IncidentTypeDesc = j.IncidentTypeDesc;
-        //            temp.IncidentNo = j.District;
-        //            ; temp.Instanceid = cpdneighbourhood[j.CpdNeighborhood].Instanceid;
-        //            x.Add(temp);
-        //        }
-        //    }
-
-        //    return x;
-        //}
 
         [BindProperty(SupportsGet = true)]
         public string? SearchTerm { get; set; }
