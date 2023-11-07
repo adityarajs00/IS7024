@@ -33,9 +33,6 @@ namespace IncidentRecord
         [JsonProperty("date_to")]
         public DateTimeOffset DateTo { get; set; }
 
-        [JsonProperty("clsd", NullValueHandling = NullValueHandling.Ignore)]
-        public Clsd? Clsd { get; set; }
-
         [JsonProperty("ucr", NullValueHandling = NullValueHandling.Ignore)]
         [JsonConverter(typeof(ParseStringConverter))]
         public long? Ucr { get; set; }
@@ -52,21 +49,14 @@ namespace IncidentRecord
         [JsonProperty("location")]
         public string Location { get; set; }
 
+        [JsonProperty("theft_code", NullValueHandling = NullValueHandling.Ignore)]
+        public TheftCode? TheftCode { get; set; }
+
         [JsonProperty("dayofweek")]
         public Dayofweek Dayofweek { get; set; }
 
-        [JsonProperty("rpt_area", NullValueHandling = NullValueHandling.Ignore)]
-        [JsonConverter(typeof(ParseStringConverter))]
-        public long? RptArea { get; set; }
-
-        [JsonProperty("cpd_neighborhood", NullValueHandling = NullValueHandling.Ignore)]
-        public string CpdNeighborhood { get; set; }
-
-        [JsonProperty("weapons", NullValueHandling = NullValueHandling.Ignore)]
-        public Weapons? Weapons { get; set; }
-
-        [JsonProperty("date_of_clearance", NullValueHandling = NullValueHandling.Ignore)]
-        public DateTimeOffset? DateOfClearance { get; set; }
+        [JsonProperty("weapons")]
+        public Weapons Weapons { get; set; }
 
         [JsonProperty("hour_from")]
         public string HourFrom { get; set; }
@@ -92,6 +82,9 @@ namespace IncidentRecord
         [JsonProperty("suspect_age")]
         public Age SuspectAge { get; set; }
 
+        [JsonProperty("suspect_gender", NullValueHandling = NullValueHandling.Ignore)]
+        public Gender? SuspectGender { get; set; }
+
         [JsonProperty("ucr_group", NullValueHandling = NullValueHandling.Ignore)]
         public UcrGroup? UcrGroup { get; set; }
 
@@ -105,11 +98,18 @@ namespace IncidentRecord
         [JsonProperty("sna_neighborhood")]
         public string SnaNeighborhood { get; set; }
 
-        [JsonProperty("theft_code", NullValueHandling = NullValueHandling.Ignore)]
-        public TheftCode? TheftCode { get; set; }
+        [JsonProperty("rpt_area", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonConverter(typeof(ParseStringConverter))]
+        public long? RptArea { get; set; }
 
-        [JsonProperty("suspect_gender", NullValueHandling = NullValueHandling.Ignore)]
-        public Gender? SuspectGender { get; set; }
+        [JsonProperty("cpd_neighborhood", NullValueHandling = NullValueHandling.Ignore)]
+        public string CpdNeighborhood { get; set; }
+
+        [JsonProperty("clsd", NullValueHandling = NullValueHandling.Ignore)]
+        public Clsd? Clsd { get; set; }
+
+        [JsonProperty("date_of_clearance", NullValueHandling = NullValueHandling.Ignore)]
+        public DateTimeOffset? DateOfClearance { get; set; }
 
         [JsonProperty("victim_ethnicity", NullValueHandling = NullValueHandling.Ignore)]
         public Ethnicity? VictimEthnicity { get; set; }
@@ -138,7 +138,7 @@ namespace IncidentRecord
 
     public enum Ethnicity { HispanicOrigin, NotOfHispanicOrig };
 
-    public enum Gender { Female, Male, Unknown };
+    public enum Gender { Female, Male, NonPersonBusiness, Unknown };
 
     public enum TheftCode { The23CShoplifting, The23DTheftFromBuilding, The23FTheftFromMotorVehicle, The23GTheftOfMotorVehiclePartsOrAccessories, The23HAllOtherLarceny, The24ITheftOfLicensePlate, The24OMotorVehicleTheft };
 
@@ -670,6 +670,8 @@ namespace IncidentRecord
                     return Gender.Female;
                 case "MALE":
                     return Gender.Male;
+                case "NON-PERSON (BUSINESS":
+                    return Gender.NonPersonBusiness;
                 case "UNKNOWN":
                     return Gender.Unknown;
             }
@@ -691,6 +693,9 @@ namespace IncidentRecord
                     return;
                 case Gender.Male:
                     serializer.Serialize(writer, "MALE");
+                    return;
+                case Gender.NonPersonBusiness:
+                    serializer.Serialize(writer, "NON-PERSON (BUSINESS");
                     return;
                 case Gender.Unknown:
                     serializer.Serialize(writer, "UNKNOWN");
