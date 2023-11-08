@@ -55,6 +55,12 @@ namespace IncidentRecord
         [JsonProperty("dayofweek")]
         public Dayofweek Dayofweek { get; set; }
 
+        [JsonProperty("rpt_area", NullValueHandling = NullValueHandling.Ignore)]
+        public string RptArea { get; set; }
+
+        [JsonProperty("cpd_neighborhood", NullValueHandling = NullValueHandling.Ignore)]
+        public string CpdNeighborhood { get; set; }
+
         [JsonProperty("weapons")]
         public Weapons Weapons { get; set; }
 
@@ -98,13 +104,6 @@ namespace IncidentRecord
         [JsonProperty("sna_neighborhood")]
         public string SnaNeighborhood { get; set; }
 
-        [JsonProperty("rpt_area", NullValueHandling = NullValueHandling.Ignore)]
-        [JsonConverter(typeof(ParseStringConverter))]
-        public long? RptArea { get; set; }
-
-        [JsonProperty("cpd_neighborhood", NullValueHandling = NullValueHandling.Ignore)]
-        public string CpdNeighborhood { get; set; }
-
         [JsonProperty("clsd", NullValueHandling = NullValueHandling.Ignore)]
         public Clsd? Clsd { get; set; }
 
@@ -124,7 +123,6 @@ namespace IncidentRecord
         [JsonProperty("totalsuspects", NullValueHandling = NullValueHandling.Ignore)]
         [JsonConverter(typeof(ParseStringConverter))]
         public long? Totalsuspects { get; set; }
-        public object YourProperty { get; internal set; }
     }
 
     public enum BeatEnum { CentralBusinessSection };
@@ -139,13 +137,13 @@ namespace IncidentRecord
 
     public enum Ethnicity { HispanicOrigin, NotOfHispanicOrig };
 
-    public enum Gender { Female, Male, NonPersonBusiness, Unknown };
+    public enum Gender { Female, Male, Unknown };
 
     public enum TheftCode { The23CShoplifting, The23DTheftFromBuilding, The23FTheftFromMotorVehicle, The23GTheftOfMotorVehiclePartsOrAccessories, The23HAllOtherLarceny, The24ITheftOfLicensePlate, The24OMotorVehicleTheft };
 
     public enum UcrGroup { AggravatedAssaults, BurglaryBreakingEntering, Homicide, Part2Minor, Rape, Robbery, Theft, UnauthorizedUse };
 
-    public enum Weapons { The11FirearmTypeNotStated, The12AAutomaticHandgun, The12Handgun, The13Rifle, The14Shotgun, The18BbAndPelletGuns, The20KnifeCuttingInstrumentIcepickAxEtc, The30BluntObjectClubHammerEtc, The40PersonalWeaponsHandsFeetTeethEtc, The60Explosives, The80OtherWeapon, The85AsphyxiationByDrowningStrangulationSuffocation, The99None, UUnknown };
+    public enum Weapons { The11FirearmTypeNotStated, The12Handgun, The13Rifle, The14Shotgun, The18BbAndPelletGuns, The20KnifeCuttingInstrumentIcepickAxEtc, The30BluntObjectClubHammerEtc, The40PersonalWeaponsHandsFeetTeethEtc, The60Explosives, The80OtherWeapon, The85AsphyxiationByDrowningStrangulationSuffocation, The99None, UUnknown };
 
     public partial struct BeatUnion
     {
@@ -671,8 +669,6 @@ namespace IncidentRecord
                     return Gender.Female;
                 case "MALE":
                     return Gender.Male;
-                case "NON-PERSON (BUSINESS":
-                    return Gender.NonPersonBusiness;
                 case "UNKNOWN":
                     return Gender.Unknown;
             }
@@ -694,9 +690,6 @@ namespace IncidentRecord
                     return;
                 case Gender.Male:
                     serializer.Serialize(writer, "MALE");
-                    return;
-                case Gender.NonPersonBusiness:
-                    serializer.Serialize(writer, "NON-PERSON (BUSINESS");
                     return;
                 case Gender.Unknown:
                     serializer.Serialize(writer, "UNKNOWN");
@@ -859,8 +852,6 @@ namespace IncidentRecord
                     return Weapons.The11FirearmTypeNotStated;
                 case "12 - HANDGUN":
                     return Weapons.The12Handgun;
-                case "12A - AUTOMATIC HANDGUN":
-                    return Weapons.The12AAutomaticHandgun;
                 case "13 - RIFLE":
                     return Weapons.The13Rifle;
                 case "14 - SHOTGUN":
@@ -902,9 +893,6 @@ namespace IncidentRecord
                     return;
                 case Weapons.The12Handgun:
                     serializer.Serialize(writer, "12 - HANDGUN");
-                    return;
-                case Weapons.The12AAutomaticHandgun:
-                    serializer.Serialize(writer, "12A - AUTOMATIC HANDGUN");
                     return;
                 case Weapons.The13Rifle:
                     serializer.Serialize(writer, "13 - RIFLE");
