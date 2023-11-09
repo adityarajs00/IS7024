@@ -55,14 +55,8 @@ namespace IncidentRecord
         [JsonProperty("dayofweek")]
         public Dayofweek Dayofweek { get; set; }
 
-        [JsonProperty("rpt_area", NullValueHandling = NullValueHandling.Ignore)]
-        public string RptArea { get; set; }
-
-        [JsonProperty("cpd_neighborhood", NullValueHandling = NullValueHandling.Ignore)]
-        public string CpdNeighborhood { get; set; }
-
-        [JsonProperty("weapons")]
-        public Weapons Weapons { get; set; }
+        [JsonProperty("weapons", NullValueHandling = NullValueHandling.Ignore)]
+        public Weapons? Weapons { get; set; }
 
         [JsonProperty("hour_from")]
         public string HourFrom { get; set; }
@@ -73,23 +67,11 @@ namespace IncidentRecord
         [JsonProperty("address_x", NullValueHandling = NullValueHandling.Ignore)]
         public string AddressX { get; set; }
 
-        [JsonProperty("longitude_x", NullValueHandling = NullValueHandling.Ignore)]
-        public string LongitudeX { get; set; }
-
-        [JsonProperty("latitude_x", NullValueHandling = NullValueHandling.Ignore)]
-        public string LatitudeX { get; set; }
-
         [JsonProperty("victim_age")]
         public Age VictimAge { get; set; }
 
-        [JsonProperty("victim_gender", NullValueHandling = NullValueHandling.Ignore)]
-        public Gender? VictimGender { get; set; }
-
         [JsonProperty("suspect_age")]
         public Age SuspectAge { get; set; }
-
-        [JsonProperty("suspect_gender", NullValueHandling = NullValueHandling.Ignore)]
-        public Gender? SuspectGender { get; set; }
 
         [JsonProperty("ucr_group", NullValueHandling = NullValueHandling.Ignore)]
         public UcrGroup? UcrGroup { get; set; }
@@ -103,6 +85,24 @@ namespace IncidentRecord
 
         [JsonProperty("sna_neighborhood")]
         public string SnaNeighborhood { get; set; }
+
+        [JsonProperty("longitude_x", NullValueHandling = NullValueHandling.Ignore)]
+        public string LongitudeX { get; set; }
+
+        [JsonProperty("latitude_x", NullValueHandling = NullValueHandling.Ignore)]
+        public string LatitudeX { get; set; }
+
+        [JsonProperty("suspect_gender", NullValueHandling = NullValueHandling.Ignore)]
+        public Gender? SuspectGender { get; set; }
+
+        [JsonProperty("rpt_area", NullValueHandling = NullValueHandling.Ignore)]
+        public string RptArea { get; set; }
+
+        [JsonProperty("cpd_neighborhood", NullValueHandling = NullValueHandling.Ignore)]
+        public string CpdNeighborhood { get; set; }
+
+        [JsonProperty("victim_gender", NullValueHandling = NullValueHandling.Ignore)]
+        public Gender? VictimGender { get; set; }
 
         [JsonProperty("clsd", NullValueHandling = NullValueHandling.Ignore)]
         public Clsd? Clsd { get; set; }
@@ -139,11 +139,11 @@ namespace IncidentRecord
 
     public enum Gender { Female, Male, Unknown };
 
-    public enum TheftCode { The23CShoplifting, The23DTheftFromBuilding, The23FTheftFromMotorVehicle, The23GTheftOfMotorVehiclePartsOrAccessories, The23HAllOtherLarceny, The24ITheftOfLicensePlate, The24OMotorVehicleTheft };
+    public enum TheftCode { The23APocketPicking, The23CShoplifting, The23DTheftFromBuilding, The23FTheftFromMotorVehicle, The23GTheftOfMotorVehiclePartsOrAccessories, The23HAllOtherLarceny, The24ITheftOfLicensePlate, The24OMotorVehicleTheft };
 
     public enum UcrGroup { AggravatedAssaults, BurglaryBreakingEntering, Homicide, Part2Minor, Rape, Robbery, Theft, UnauthorizedUse };
 
-    public enum Weapons { The11FirearmTypeNotStated, The12Handgun, The13Rifle, The14Shotgun, The18BbAndPelletGuns, The20KnifeCuttingInstrumentIcepickAxEtc, The30BluntObjectClubHammerEtc, The40PersonalWeaponsHandsFeetTeethEtc, The60Explosives, The80OtherWeapon, The85AsphyxiationByDrowningStrangulationSuffocation, The99None, UUnknown };
+    public enum Weapons { The11FirearmTypeNotStated, The12Handgun, The13Rifle, The18BbAndPelletGuns, The20KnifeCuttingInstrumentIcepickAxEtc, The30BluntObjectClubHammerEtc, The40PersonalWeaponsHandsFeetTeethEtc, The60Explosives, The80OtherWeapon, The85AsphyxiationByDrowningStrangulationSuffocation, The99None, UUnknown };
 
     public partial struct BeatUnion
     {
@@ -711,6 +711,8 @@ namespace IncidentRecord
             var value = serializer.Deserialize<string>(reader);
             switch (value)
             {
+                case "23A-POCKET-PICKING":
+                    return TheftCode.The23APocketPicking;
                 case "23C-SHOPLIFTING":
                     return TheftCode.The23CShoplifting;
                 case "23D-THEFT FROM BUILDING":
@@ -739,6 +741,9 @@ namespace IncidentRecord
             var value = (TheftCode)untypedValue;
             switch (value)
             {
+                case TheftCode.The23APocketPicking:
+                    serializer.Serialize(writer, "23A-POCKET-PICKING");
+                    return;
                 case TheftCode.The23CShoplifting:
                     serializer.Serialize(writer, "23C-SHOPLIFTING");
                     return;
@@ -854,8 +859,6 @@ namespace IncidentRecord
                     return Weapons.The12Handgun;
                 case "13 - RIFLE":
                     return Weapons.The13Rifle;
-                case "14 - SHOTGUN":
-                    return Weapons.The14Shotgun;
                 case "18 - BB AND PELLET GUNS":
                     return Weapons.The18BbAndPelletGuns;
                 case "20 - KNIFE/CUTTING INSTRUMENT (ICEPICK, AX, ETC.)":
@@ -896,9 +899,6 @@ namespace IncidentRecord
                     return;
                 case Weapons.The13Rifle:
                     serializer.Serialize(writer, "13 - RIFLE");
-                    return;
-                case Weapons.The14Shotgun:
-                    serializer.Serialize(writer, "14 - SHOTGUN");
                     return;
                 case Weapons.The18BbAndPelletGuns:
                     serializer.Serialize(writer, "18 - BB AND PELLET GUNS");
