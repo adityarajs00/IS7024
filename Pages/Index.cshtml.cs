@@ -61,7 +61,8 @@ namespace Neighborhood_Watch.Pages
             return await Task.Run(async () =>
             {
                 Task<HttpResponseMessage> task = client.GetAsync("https://data.cincinnati-oh.gov/resource/gexm-h6bt.json");
-                HttpResponseMessage result = await task;
+                // using ConfigureAwait(false) to avoid deadlocks
+                HttpResponseMessage result = await task.ConfigureAwait(false);
                 Task<string> readString = result.Content.ReadAsStringAsync();
                 string ServicesJson = readString.Result;
                 Services = Calls.FromJson(ServicesJson);
@@ -77,7 +78,8 @@ namespace Neighborhood_Watch.Pages
             return await Task.Run(async () =>
             {
                 Task<HttpResponseMessage> task = client.GetAsync("https://data.cincinnati-oh.gov/resource/k59e-2pvf.json");
-                HttpResponseMessage result = await task;
+                // using ConfigureAwait(false) to avoid deadlocks
+                HttpResponseMessage result = await task.ConfigureAwait(false);
                 Task<string> readString = result.Content.ReadAsStringAsync();
                 string incidentJson = readString.Result;
                 incident = Incidents.FromJson(incidentJson);
@@ -100,7 +102,8 @@ namespace Neighborhood_Watch.Pages
                 using (HttpClient httpClient = new HttpClient())
                 {
                     // Send an HTTP GET request to the URL
-                    HttpResponseMessage response = await httpClient.GetAsync(url);
+                    // using ConfigureAwait(false) to avoid deadlocks
+                    HttpResponseMessage response = await httpClient.GetAsync(url).ConfigureAwait(false);
 
                     if (response.IsSuccessStatusCode)
                     {

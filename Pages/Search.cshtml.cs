@@ -55,7 +55,8 @@ namespace Neighborhood_Watch.Pages
                 using (HttpClient httpClient = new HttpClient())
                 {
                     // Send an HTTP GET request to the URL
-                    HttpResponseMessage response = await httpClient.GetAsync(url);
+                    // using ConfigureAwait(false) to avoid deadlocks
+                    HttpResponseMessage response = await httpClient.GetAsync(url).ConfigureAwait(false);
 
                     if (response.IsSuccessStatusCode)
                     {
