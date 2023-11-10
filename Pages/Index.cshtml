@@ -4,8 +4,9 @@
 @model IndexModel
 @{
     ViewData["Title"] = "Home page";
-    List<Calls> cls = (List<Calls>)ViewData["Services"];
-    List <Incidents> incident = (List<Incidents>) ViewData["Incidents"];
+    List<Calls>? cls = ViewData["Services"] as List<Calls>;
+    List<Incidents>? incident = ViewData["Incidents"] as List<Incidents>;
+    // Using null conditional operators to handle reference types
 }
 <head>
     <meta charset="utf-8" />
@@ -58,14 +59,17 @@
     <div class="search-results">
         <h3>Search Results:</h3>
         <ul>
-            @foreach (var result in Model.SearchResults)
-            {
-                <strong>
-                <li class="search-result-item">@result</li>
-                <hr>
-                </strong>
-            }
+           @foreach (var result in Model.SearchResults)
+{
+    <li class="search-result-item">
+        <span style="font-weight: bold;">@result</span>
+    </li>
+    
+}
+
+
         </ul>
+        <hr> <!--placed horizontal line outside-->
     </div>
 }
 
