@@ -15,6 +15,10 @@ namespace Neighborhood_Watch.Pages
 
         static readonly HttpClient client = new HttpClient();
         private readonly ILogger<IndexModel> _logger;
+        public IndexModel(ILogger<IndexModel> logger)
+        {
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        } // Initialized the _logger field within the constructor
 
         public async Task OnGetAsync()
         {
@@ -116,7 +120,7 @@ namespace Neighborhood_Watch.Pages
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception) // Resolved warnings
             {
                 return new List<string>();
             }

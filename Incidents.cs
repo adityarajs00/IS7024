@@ -49,14 +49,17 @@ namespace IncidentRecord
         [JsonProperty("location")]
         public string Location { get; set; }
 
-        [JsonProperty("theft_code", NullValueHandling = NullValueHandling.Ignore)]
-        public TheftCode? TheftCode { get; set; }
-
         [JsonProperty("dayofweek")]
         public Dayofweek Dayofweek { get; set; }
 
-        [JsonProperty("weapons", NullValueHandling = NullValueHandling.Ignore)]
-        public Weapons? Weapons { get; set; }
+        [JsonProperty("rpt_area", NullValueHandling = NullValueHandling.Ignore)]
+        public string RptArea { get; set; }
+
+        [JsonProperty("cpd_neighborhood", NullValueHandling = NullValueHandling.Ignore)]
+        public string CpdNeighborhood { get; set; }
+
+        [JsonProperty("weapons")]
+        public Weapons Weapons { get; set; }
 
         [JsonProperty("hour_from")]
         public string HourFrom { get; set; }
@@ -67,8 +70,17 @@ namespace IncidentRecord
         [JsonProperty("address_x", NullValueHandling = NullValueHandling.Ignore)]
         public string AddressX { get; set; }
 
+        [JsonProperty("longitude_x", NullValueHandling = NullValueHandling.Ignore)]
+        public string LongitudeX { get; set; }
+
+        [JsonProperty("latitude_x", NullValueHandling = NullValueHandling.Ignore)]
+        public string LatitudeX { get; set; }
+
         [JsonProperty("victim_age")]
         public Age VictimAge { get; set; }
+
+        [JsonProperty("victim_gender", NullValueHandling = NullValueHandling.Ignore)]
+        public Gender? VictimGender { get; set; }
 
         [JsonProperty("suspect_age")]
         public Age SuspectAge { get; set; }
@@ -86,23 +98,11 @@ namespace IncidentRecord
         [JsonProperty("sna_neighborhood")]
         public string SnaNeighborhood { get; set; }
 
-        [JsonProperty("longitude_x", NullValueHandling = NullValueHandling.Ignore)]
-        public string LongitudeX { get; set; }
-
-        [JsonProperty("latitude_x", NullValueHandling = NullValueHandling.Ignore)]
-        public string LatitudeX { get; set; }
+        [JsonProperty("theft_code", NullValueHandling = NullValueHandling.Ignore)]
+        public TheftCode? TheftCode { get; set; }
 
         [JsonProperty("suspect_gender", NullValueHandling = NullValueHandling.Ignore)]
         public Gender? SuspectGender { get; set; }
-
-        [JsonProperty("rpt_area", NullValueHandling = NullValueHandling.Ignore)]
-        public string RptArea { get; set; }
-
-        [JsonProperty("cpd_neighborhood", NullValueHandling = NullValueHandling.Ignore)]
-        public string CpdNeighborhood { get; set; }
-
-        [JsonProperty("victim_gender", NullValueHandling = NullValueHandling.Ignore)]
-        public Gender? VictimGender { get; set; }
 
         [JsonProperty("clsd", NullValueHandling = NullValueHandling.Ignore)]
         public Clsd? Clsd { get; set; }
@@ -111,10 +111,10 @@ namespace IncidentRecord
         public DateTimeOffset? DateOfClearance { get; set; }
 
         [JsonProperty("victim_ethnicity", NullValueHandling = NullValueHandling.Ignore)]
-        public Ethnicity? VictimEthnicity { get; set; }
+        public string VictimEthnicity { get; set; }
 
         [JsonProperty("suspect_ethnicity", NullValueHandling = NullValueHandling.Ignore)]
-        public Ethnicity? SuspectEthnicity { get; set; }
+        public string SuspectEthnicity { get; set; }
 
         [JsonProperty("totalnumbervictims", NullValueHandling = NullValueHandling.Ignore)]
         [JsonConverter(typeof(ParseStringConverter))]
@@ -135,11 +135,9 @@ namespace IncidentRecord
 
     public enum Age { Adult18, JuvenileUnder18, Over70, The1825, The2630, The3140, The4150, The5160, The6170, Under18, Unknown };
 
-    public enum Ethnicity { HispanicOrigin, NotOfHispanicOrig };
-
     public enum Gender { Female, Male, Unknown };
 
-    public enum TheftCode { The23APocketPicking, The23CShoplifting, The23DTheftFromBuilding, The23FTheftFromMotorVehicle, The23GTheftOfMotorVehiclePartsOrAccessories, The23HAllOtherLarceny, The24ITheftOfLicensePlate, The24OMotorVehicleTheft };
+    public enum TheftCode { The23APocketPicking, The23BPurseSnatching, The23CShoplifting, The23DTheftFromBuilding, The23FTheftFromMotorVehicle, The23GTheftOfMotorVehiclePartsOrAccessories, The23HAllOtherLarceny, The24ITheftOfLicensePlate, The24OMotorVehicleTheft };
 
     public enum UcrGroup { AggravatedAssaults, BurglaryBreakingEntering, Homicide, Part2Minor, Rape, Robbery, Theft, UnauthorizedUse };
 
@@ -188,7 +186,6 @@ namespace IncidentRecord
                 DstUnionConverter.Singleton,
                 DstEnumConverter.Singleton,
                 AgeConverter.Singleton,
-                EthnicityConverter.Singleton,
                 GenderConverter.Singleton,
                 TheftCodeConverter.Singleton,
                 UcrGroupConverter.Singleton,
@@ -614,47 +611,6 @@ namespace IncidentRecord
         public static readonly AgeConverter Singleton = new AgeConverter();
     }
 
-    internal class EthnicityConverter : JsonConverter
-    {
-        public override bool CanConvert(Type t) => t == typeof(Ethnicity) || t == typeof(Ethnicity?);
-
-        public override object ReadJson(JsonReader reader, Type t, object existingValue, JsonSerializer serializer)
-        {
-            if (reader.TokenType == JsonToken.Null) return null;
-            var value = serializer.Deserialize<string>(reader);
-            switch (value)
-            {
-                case "HISPANIC ORIGIN":
-                    return Ethnicity.HispanicOrigin;
-                case "NOT OF HISPANIC ORIG":
-                    return Ethnicity.NotOfHispanicOrig;
-            }
-            throw new Exception("Cannot unmarshal type Ethnicity");
-        }
-
-        public override void WriteJson(JsonWriter writer, object untypedValue, JsonSerializer serializer)
-        {
-            if (untypedValue == null)
-            {
-                serializer.Serialize(writer, null);
-                return;
-            }
-            var value = (Ethnicity)untypedValue;
-            switch (value)
-            {
-                case Ethnicity.HispanicOrigin:
-                    serializer.Serialize(writer, "HISPANIC ORIGIN");
-                    return;
-                case Ethnicity.NotOfHispanicOrig:
-                    serializer.Serialize(writer, "NOT OF HISPANIC ORIG");
-                    return;
-            }
-            throw new Exception("Cannot marshal type Ethnicity");
-        }
-
-        public static readonly EthnicityConverter Singleton = new EthnicityConverter();
-    }
-
     internal class GenderConverter : JsonConverter
     {
         public override bool CanConvert(Type t) => t == typeof(Gender) || t == typeof(Gender?);
@@ -713,6 +669,8 @@ namespace IncidentRecord
             {
                 case "23A-POCKET-PICKING":
                     return TheftCode.The23APocketPicking;
+                case "23B-PURSE-SNATCHING":
+                    return TheftCode.The23BPurseSnatching;
                 case "23C-SHOPLIFTING":
                     return TheftCode.The23CShoplifting;
                 case "23D-THEFT FROM BUILDING":
@@ -743,6 +701,9 @@ namespace IncidentRecord
             {
                 case TheftCode.The23APocketPicking:
                     serializer.Serialize(writer, "23A-POCKET-PICKING");
+                    return;
+                case TheftCode.The23BPurseSnatching:
+                    serializer.Serialize(writer, "23B-PURSE-SNATCHING");
                     return;
                 case TheftCode.The23CShoplifting:
                     serializer.Serialize(writer, "23C-SHOPLIFTING");
