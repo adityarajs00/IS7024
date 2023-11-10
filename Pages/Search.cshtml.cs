@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,14 @@ namespace Neighborhood_Watch.Pages
 {
     public class SearchModel : PageModel
     {
+        // logger set up (To log the exceptions for debugging purposes)
+        private readonly ILogger<SearchModel> _logger;
+
+        public SearchModel(ILogger<SearchModel> logger)
+        {
+            _logger = logger;
+        }
+
         [BindProperty(SupportsGet = true)]
         public string? SearchTerm { get; set; }
 
@@ -53,6 +62,9 @@ namespace Neighborhood_Watch.Pages
                         // Read the JSON data as a string
                         string jsonContent = await response.Content.ReadAsStringAsync();
 
+                        // Handle JSON parsing errors
+                        try
+                        {
                         // Deserialize the JSON data into JArray
                         JArray data = JArray.Parse(jsonContent);
 
@@ -60,6 +72,12 @@ namespace Neighborhood_Watch.Pages
                         List<string> dataList = data.Select(item => item.ToString()).ToList();
 
                         return dataList;
+                        }
+                        catch (JsonReaderException ex)
+                        {
+                            _logger.LogError(ex, "Error parsing JSON response");
+                            return new List<string>();
+                        }
                     }
                     else
                     {
@@ -68,9 +86,23 @@ namespace Neighborhood_Watch.Pages
                     }
                 }
             }
+            // Using specific exception types to provide meaningful error messages
+            catch (HttpRequestException ex)
+            {
+                // Handle HTTP request errors
+                _logger.LogError(ex, "Error in HTTP request");
+                return new List<string>();
+            }
+            catch (TaskCanceledException ex)
+            {
+                // Handle timeout errors
+                _logger.LogError(ex, "Request timed out");
+                return new List<string>();
+            }
             catch (Exception ex)
             {
-
+                // Handle other unexpected errors
+                _logger.LogError(ex, "An unexpected error occurred");
                 return new List<string>();
             }
         }
