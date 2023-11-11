@@ -58,3 +58,7 @@
         </ul>
     </div>
 }
+@if (Model.SearchResults != null && Model.SearchResults.Count == 0)
+{
+    <p>No results found.</p>
+}
