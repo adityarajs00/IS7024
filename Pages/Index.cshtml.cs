@@ -58,8 +58,7 @@ namespace Neighborhood_Watch.Pages
             List<Calls> Services = new List<Calls>();
             return await Task.Run(async () =>
             {
-                Task<HttpResponseMessage> task = client.GetAsync("https://data.cincinnati-oh.gov/resource/gexm-h6bt.json");
-                HttpResponseMessage result = await task;
+                HttpResponseMessage result = await client.GetAsync("https://data.cincinnati-oh.gov/resource/gexm-h6bt.json");
                 Task<string> readString = result.Content.ReadAsStringAsync();
                 string ServicesJson = readString.Result;
                 Services = Calls.FromJson(ServicesJson);
