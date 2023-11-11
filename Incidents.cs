@@ -37,8 +37,8 @@ namespace IncidentRecord
         [JsonConverter(typeof(ParseStringConverter))]
         public long? Ucr { get; set; }
 
-        [JsonProperty("dst")]
-        public DstUnion Dst { get; set; }
+        [JsonProperty("dst", NullValueHandling = NullValueHandling.Ignore)]
+        public DstUnion? Dst { get; set; }
 
         [JsonProperty("beat", NullValueHandling = NullValueHandling.Ignore)]
         public BeatUnion? Beat { get; set; }
@@ -46,20 +46,14 @@ namespace IncidentRecord
         [JsonProperty("offense", NullValueHandling = NullValueHandling.Ignore)]
         public string Offense { get; set; }
 
-        [JsonProperty("location")]
+        [JsonProperty("location", NullValueHandling = NullValueHandling.Ignore)]
         public string Location { get; set; }
 
         [JsonProperty("dayofweek")]
         public Dayofweek Dayofweek { get; set; }
 
-        [JsonProperty("rpt_area", NullValueHandling = NullValueHandling.Ignore)]
-        public string RptArea { get; set; }
-
-        [JsonProperty("cpd_neighborhood", NullValueHandling = NullValueHandling.Ignore)]
-        public string CpdNeighborhood { get; set; }
-
-        [JsonProperty("weapons")]
-        public Weapons Weapons { get; set; }
+        [JsonProperty("weapons", NullValueHandling = NullValueHandling.Ignore)]
+        public Weapons? Weapons { get; set; }
 
         [JsonProperty("hour_from")]
         public string HourFrom { get; set; }
@@ -85,12 +79,15 @@ namespace IncidentRecord
         [JsonProperty("suspect_age")]
         public Age SuspectAge { get; set; }
 
+        [JsonProperty("suspect_gender", NullValueHandling = NullValueHandling.Ignore)]
+        public Gender? SuspectGender { get; set; }
+
         [JsonProperty("ucr_group", NullValueHandling = NullValueHandling.Ignore)]
         public UcrGroup? UcrGroup { get; set; }
 
-        [JsonProperty("zip")]
+        [JsonProperty("zip", NullValueHandling = NullValueHandling.Ignore)]
         [JsonConverter(typeof(ParseStringConverter))]
-        public long Zip { get; set; }
+        public long? Zip { get; set; }
 
         [JsonProperty("community_council_neighborhood")]
         public string CommunityCouncilNeighborhood { get; set; }
@@ -98,23 +95,26 @@ namespace IncidentRecord
         [JsonProperty("sna_neighborhood")]
         public string SnaNeighborhood { get; set; }
 
-        [JsonProperty("theft_code", NullValueHandling = NullValueHandling.Ignore)]
-        public TheftCode? TheftCode { get; set; }
-
-        [JsonProperty("suspect_gender", NullValueHandling = NullValueHandling.Ignore)]
-        public Gender? SuspectGender { get; set; }
-
         [JsonProperty("clsd", NullValueHandling = NullValueHandling.Ignore)]
         public Clsd? Clsd { get; set; }
 
         [JsonProperty("date_of_clearance", NullValueHandling = NullValueHandling.Ignore)]
         public DateTimeOffset? DateOfClearance { get; set; }
 
+        [JsonProperty("theft_code", NullValueHandling = NullValueHandling.Ignore)]
+        public TheftCode? TheftCode { get; set; }
+
+        [JsonProperty("rpt_area", NullValueHandling = NullValueHandling.Ignore)]
+        public string RptArea { get; set; }
+
+        [JsonProperty("cpd_neighborhood", NullValueHandling = NullValueHandling.Ignore)]
+        public string CpdNeighborhood { get; set; }
+
         [JsonProperty("victim_ethnicity", NullValueHandling = NullValueHandling.Ignore)]
-        public string VictimEthnicity { get; set; }
+        public Ethnicity? VictimEthnicity { get; set; }
 
         [JsonProperty("suspect_ethnicity", NullValueHandling = NullValueHandling.Ignore)]
-        public string SuspectEthnicity { get; set; }
+        public Ethnicity? SuspectEthnicity { get; set; }
 
         [JsonProperty("totalnumbervictims", NullValueHandling = NullValueHandling.Ignore)]
         [JsonConverter(typeof(ParseStringConverter))]
@@ -135,13 +135,15 @@ namespace IncidentRecord
 
     public enum Age { Adult18, JuvenileUnder18, Over70, The1825, The2630, The3140, The4150, The5160, The6170, Under18, Unknown };
 
+    public enum Ethnicity { NotOfHispanicOrig };
+
     public enum Gender { Female, Male, Unknown };
 
     public enum TheftCode { The23APocketPicking, The23BPurseSnatching, The23CShoplifting, The23DTheftFromBuilding, The23FTheftFromMotorVehicle, The23GTheftOfMotorVehiclePartsOrAccessories, The23HAllOtherLarceny, The24ITheftOfLicensePlate, The24OMotorVehicleTheft };
 
     public enum UcrGroup { AggravatedAssaults, BurglaryBreakingEntering, Homicide, Part2Minor, Rape, Robbery, Theft, UnauthorizedUse };
 
-    public enum Weapons { The11FirearmTypeNotStated, The12Handgun, The13Rifle, The18BbAndPelletGuns, The20KnifeCuttingInstrumentIcepickAxEtc, The30BluntObjectClubHammerEtc, The40PersonalWeaponsHandsFeetTeethEtc, The60Explosives, The80OtherWeapon, The85AsphyxiationByDrowningStrangulationSuffocation, The99None, UUnknown };
+    public enum Weapons { The11FirearmTypeNotStated, The12Handgun, The13Rifle, The18BbAndPelletGuns, The20KnifeCuttingInstrumentIcepickAxEtc, The30BluntObjectClubHammerEtc, The35MotorVehicleWhenUsedAsWeapon, The40PersonalWeaponsHandsFeetTeethEtc, The60Explosives, The80OtherWeapon, The85AsphyxiationByDrowningStrangulationSuffocation, The99None, UUnknown };
 
     public partial struct BeatUnion
     {
@@ -186,6 +188,7 @@ namespace IncidentRecord
                 DstUnionConverter.Singleton,
                 DstEnumConverter.Singleton,
                 AgeConverter.Singleton,
+                EthnicityConverter.Singleton,
                 GenderConverter.Singleton,
                 TheftCodeConverter.Singleton,
                 UcrGroupConverter.Singleton,
@@ -611,6 +614,40 @@ namespace IncidentRecord
         public static readonly AgeConverter Singleton = new AgeConverter();
     }
 
+    internal class EthnicityConverter : JsonConverter
+    {
+        public override bool CanConvert(Type t) => t == typeof(Ethnicity) || t == typeof(Ethnicity?);
+
+        public override object ReadJson(JsonReader reader, Type t, object existingValue, JsonSerializer serializer)
+        {
+            if (reader.TokenType == JsonToken.Null) return null;
+            var value = serializer.Deserialize<string>(reader);
+            if (value == "NOT OF HISPANIC ORIG")
+            {
+                return Ethnicity.NotOfHispanicOrig;
+            }
+            throw new Exception("Cannot unmarshal type Ethnicity");
+        }
+
+        public override void WriteJson(JsonWriter writer, object untypedValue, JsonSerializer serializer)
+        {
+            if (untypedValue == null)
+            {
+                serializer.Serialize(writer, null);
+                return;
+            }
+            var value = (Ethnicity)untypedValue;
+            if (value == Ethnicity.NotOfHispanicOrig)
+            {
+                serializer.Serialize(writer, "NOT OF HISPANIC ORIG");
+                return;
+            }
+            throw new Exception("Cannot marshal type Ethnicity");
+        }
+
+        public static readonly EthnicityConverter Singleton = new EthnicityConverter();
+    }
+
     internal class GenderConverter : JsonConverter
     {
         public override bool CanConvert(Type t) => t == typeof(Gender) || t == typeof(Gender?);
@@ -826,6 +863,8 @@ namespace IncidentRecord
                     return Weapons.The20KnifeCuttingInstrumentIcepickAxEtc;
                 case "30 - BLUNT OBJECT (CLUB, HAMMER, ETC.)":
                     return Weapons.The30BluntObjectClubHammerEtc;
+                case "35 - MOTOR VEHICLE (WHEN USED AS WEAPON)":
+                    return Weapons.The35MotorVehicleWhenUsedAsWeapon;
                 case "40 - PERSONAL WEAPONS (HANDS, FEET, TEETH, ETC.)":
                     return Weapons.The40PersonalWeaponsHandsFeetTeethEtc;
                 case "60 - EXPLOSIVES":
@@ -869,6 +908,9 @@ namespace IncidentRecord
                     return;
                 case Weapons.The30BluntObjectClubHammerEtc:
                     serializer.Serialize(writer, "30 - BLUNT OBJECT (CLUB, HAMMER, ETC.)");
+                    return;
+                case Weapons.The35MotorVehicleWhenUsedAsWeapon:
+                    serializer.Serialize(writer, "35 - MOTOR VEHICLE (WHEN USED AS WEAPON)");
                     return;
                 case Weapons.The40PersonalWeaponsHandsFeetTeethEtc:
                     serializer.Serialize(writer, "40 - PERSONAL WEAPONS (HANDS, FEET, TEETH, ETC.)");
