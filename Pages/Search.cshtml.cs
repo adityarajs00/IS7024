@@ -20,19 +20,19 @@ namespace Neighborhood_Watch.Pages
             if (!string.IsNullOrEmpty(SearchTerm))
             {
                 // Define the URLs of the JSON resources
-                string url1 = "https://data.cincinnati-oh.gov/resource/k59e-2pvf.json";
-                string url2 = "https://data.cincinnati-oh.gov/resource/gexm-h6bt.json";
+                string neighboorhoodURL1 = "https://data.cincinnati-oh.gov/resource/k59e-2pvf.json";
+                string neighboorhoodURL2 = "https://data.cincinnati-oh.gov/resource/gexm-h6bt.json";
 
                 // Create a list to store the results
                 List<string> searchResults = new List<string>();
 
                 // Fetch and process data from the first URL
-                var dataFromUrl1 = await FetchDataFromUrl(url1);
-                searchResults.AddRange(dataFromUrl1);
+                var neighborhoodDataFromUrl1 = await FetchDataFromUrl(neighboorhoodURL1);
+                searchResults.AddRange(neighborhoodDataFromUrl1);
 
                 // Fetch and process data from the second URL
-                var dataFromUrl2 = await FetchDataFromUrl(url2);
-                searchResults.AddRange(dataFromUrl2);
+                var neighborhoodDataFromUrl2 = await FetchDataFromUrl(neighboorhoodURL2);
+                searchResults.AddRange(neighborhoodDataFromUrl2);
 
                 // Filter the results based on the search term within the attributes
                 SearchResults = searchResults.Where(item => item.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase)).ToList();
@@ -48,7 +48,7 @@ namespace Neighborhood_Watch.Pages
                     // Send an HTTP GET request to the URL
                     HttpResponseMessage response = await httpClient.GetAsync(url);
 
-                    if (response.IsSuccessStatusCode)
+                    if (response != null && response.IsSuccessStatusCode)
                     {
                         // Read the JSON data as a string
                         string jsonContent = await response.Content.ReadAsStringAsync();

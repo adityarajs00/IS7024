@@ -114,15 +114,15 @@ namespace Neighborhood_Watch.Pages
                         return dataList;
                     }
                     else
-                    {
-
+                    { 
                         return new List<string>();
                     }
                 }
             }
-            catch (Exception) // Resolved warnings
+            catch (Exception ex) // Resolved warnings
             {
-                return new List<string>();
+                _logger.LogError("Error: ", ex);
+                return new List<string>{"No Results Found"};
             }
         }
 
