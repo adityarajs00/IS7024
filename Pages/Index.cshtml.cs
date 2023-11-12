@@ -33,19 +33,19 @@ namespace Neighborhood_Watch.Pages
             if (!string.IsNullOrEmpty(SearchTerm))
             {
                 // Define the URLs of the JSON resources
-                string url1 = "https://data.cincinnati-oh.gov/resource/k59e-2pvf.json";
-                string url2 = "https://data.cincinnati-oh.gov/resource/gexm-h6bt.json";
+                string apiUrl1 = "https://data.cincinnati-oh.gov/resource/k59e-2pvf.json";
+                string apiurl2 = "https://data.cincinnati-oh.gov/resource/gexm-h6bt.json";
 
                 // Create a list to store the results
                 List<string> searchResults = new List<string>();
 
                 // Fetch and process data from the first URL
-                var dataFromUrl1 = await FetchDataFromUrl(url1);
-                searchResults.AddRange(dataFromUrl1);
+                var jsonDataFromUrl1 = await FetchDataFromUrl(apiUrl1);
+                searchResults.AddRange(jsonDataFromUrl1);
 
                 // Fetch and process data from the second URL
-                var dataFromUrl2 = await FetchDataFromUrl(url2);
-                searchResults.AddRange(dataFromUrl2);
+                var jsonDataFromUrl2 = await FetchDataFromUrl(apiurl2);
+                searchResults.AddRange(jsonDataFromUrl2);
 
                 // Filter the results based on the search term within the attributes
                 SearchResults = searchResults.Where(item => item.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase)).ToList();
@@ -120,8 +120,9 @@ namespace Neighborhood_Watch.Pages
                     }
                 }
             }
-            catch (Exception) // Resolved warnings
+            catch (Exception ex) // Resolved warnings
             {
+                _logger.LogError("Issue found! ", ex);
                 return new List<string>();
             }
         }
