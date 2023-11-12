@@ -19,7 +19,7 @@
 <section class="contact_section layout_padding">
     <div class="contact_bg_box">
         <div class="img-box">
-            <img src="images/contact-bg.jpg" alt="">
+            <img src="images/contact-bg.jpg" alt="contact" id="contact">
         </div>
     </div>
     <div class="container">
@@ -28,23 +28,23 @@
                 Let us know about your neighborhood
             </h2>
         </div>
-        <div class="">
+        <div class="container">
             <div class="row">
                 <div class="col-md-7 mx-auto">
                     <form action="#">
                         <div class="contact_form-container">
                             <div>
                                 <div>
-                                    <input type="text" placeholder="Full Name" />
+                                    <input type="text" placeholder="Full Name" name="fullName" id="fullName" />
                                 </div>
                                 <div>
-                                    <input type="email" placeholder="Email" />
+                                    <input type="email" placeholder="Email" name="email" id="email" />
                                 </div>
                                 <div>
-                                    <input type="text" placeholder="Phone Number" />
+                                    <input type="text" placeholder="Phone Number" name="mobile" id="mobile"/>
                                 </div>
                                 <div>
-                                    <input type="text" placeholder="Address" />
+                                    <input type="text" placeholder="Address" name="address" id="address" />
                                 </div>
                                 <div>
                                     <select class="neighborhood_dropdown">
@@ -54,8 +54,21 @@
                                     </select>
                                 </div>  
                                 <div class="slidecontainer">
-                                    <input type="range" class="slider" min="0" max="10" step="1" value="5" id="safety_rating">
                                     <label for="safety_rating">Safety Rating: <span id="safety_rating_value">5</span></label>
+                                    <input type="range" class="slider" list="tickmarks" min="0" max="10" step="1" value="5" id="safety_rating">
+                                    <datalist id="tickmarks">
+                                        <option value="0">0</option>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                        <option value="6">6</option>
+                                        <option value="7">7</option>
+                                        <option value="8">8</option>
+                                        <option value="9">9</option>
+                                        <option value="10">10</option>
+                                    </datalist>
                                 </div>
                                 <div>
                                     <input type="text" placeholder="Comments" class="message_input" />
