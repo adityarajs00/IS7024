@@ -36,8 +36,8 @@ namespace IncidentRecord
         [JsonConverter(typeof(ParseStringConverter))]
         public long? Ucr { get; set; }
 
-        [JsonProperty("dst")]
-        public DstUnion Dst { get; set; }
+        [JsonProperty("district")]
+        public DistrictUnion District { get; set; }
 
         [JsonProperty("beat", NullValueHandling = NullValueHandling.Ignore)]
         public BeatUnion? Beat { get; set; }
@@ -153,13 +153,13 @@ namespace IncidentRecord
         public static implicit operator BeatUnion(long Integer) => new BeatUnion { Integer = Integer };
     }
 
-    public partial struct DstUnion
+    public partial struct DistrictUnion
     {
         public DstEnum? Enum;
         public long? Integer;
 
-        public static implicit operator DstUnion(DstEnum Enum) => new DstUnion { Enum = Enum };
-        public static implicit operator DstUnion(long Integer) => new DstUnion { Integer = Integer };
+        public static implicit operator DistrictUnion(DstEnum Enum) => new DistrictUnion { Enum = Enum };
+        public static implicit operator DistrictUnion(long Integer) => new DistrictUnion { Integer = Integer };
     }
 
     public partial class Incidents
@@ -417,7 +417,7 @@ namespace IncidentRecord
 
     internal class DstUnionConverter : JsonConverter
     {
-        public override bool CanConvert(Type t) => t == typeof(DstUnion) || t == typeof(DstUnion?);
+        public override bool CanConvert(Type t) => t == typeof(DistrictUnion) || t == typeof(DistrictUnion?);
 
         public override object ReadJson(JsonReader reader, Type t, object existingValue, JsonSerializer serializer)
         {
@@ -428,12 +428,12 @@ namespace IncidentRecord
                     var stringValue = serializer.Deserialize<string>(reader);
                     if (stringValue == "CENTRAL BUSINESS")
                     {
-                        return new DstUnion { Enum = DstEnum.CentralBusiness };
+                        return new DistrictUnion { Enum = DstEnum.CentralBusiness };
                     }
                     long l;
                     if (Int64.TryParse(stringValue, out l))
                     {
-                        return new DstUnion { Integer = l };
+                        return new DistrictUnion { Integer = l };
                     }
                     break;
             }
@@ -442,7 +442,7 @@ namespace IncidentRecord
 
         public override void WriteJson(JsonWriter writer, object untypedValue, JsonSerializer serializer)
         {
-            var value = (DstUnion)untypedValue;
+            var value = (DistrictUnion)untypedValue;
             if (value.Enum != null)
             {
                 if (value.Enum == DstEnum.CentralBusiness)
