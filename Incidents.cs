@@ -21,11 +21,10 @@ namespace IncidentRecord
         public string Instanceid { get; set; }
 
         [JsonProperty("incident_no")]
-        [JsonConverter(typeof(ParseStringConverter))]
-        public long IncidentNo { get; set; }
+        public string IncidentNo { get; set; }
 
-        [JsonProperty("date_reported", NullValueHandling = NullValueHandling.Ignore)]
-        public DateTimeOffset? DateReported { get; set; }
+        [JsonProperty("date_reported")]
+        public DateTimeOffset DateReported { get; set; }
 
         [JsonProperty("date_from")]
         public DateTimeOffset DateFrom { get; set; }
@@ -37,23 +36,33 @@ namespace IncidentRecord
         [JsonConverter(typeof(ParseStringConverter))]
         public long? Ucr { get; set; }
 
-        [JsonProperty("dst", NullValueHandling = NullValueHandling.Ignore)]
-        public DstUnion? Dst { get; set; }
+        [JsonProperty("dst")]
+        public DstUnion Dst { get; set; }
 
         [JsonProperty("beat", NullValueHandling = NullValueHandling.Ignore)]
         public BeatUnion? Beat { get; set; }
 
         [JsonProperty("offense", NullValueHandling = NullValueHandling.Ignore)]
-        public string Offense { get; set; }
+        public Offense? Offense { get; set; }
 
-        [JsonProperty("location", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("location")]
         public string Location { get; set; }
+
+        [JsonProperty("theft_code", NullValueHandling = NullValueHandling.Ignore)]
+        public TheftCode? TheftCode { get; set; }
 
         [JsonProperty("dayofweek")]
         public Dayofweek Dayofweek { get; set; }
 
-        [JsonProperty("weapons", NullValueHandling = NullValueHandling.Ignore)]
-        public Weapons? Weapons { get; set; }
+        [JsonProperty("rpt_area", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonConverter(typeof(ParseStringConverter))]
+        public long? RptArea { get; set; }
+
+        [JsonProperty("cpd_neighborhood", NullValueHandling = NullValueHandling.Ignore)]
+        public string CpdNeighborhood { get; set; }
+
+        [JsonProperty("weapons")]
+        public Weapons Weapons { get; set; }
 
         [JsonProperty("hour_from")]
         public string HourFrom { get; set; }
@@ -85,9 +94,9 @@ namespace IncidentRecord
         [JsonProperty("ucr_group", NullValueHandling = NullValueHandling.Ignore)]
         public UcrGroup? UcrGroup { get; set; }
 
-        [JsonProperty("zip", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("zip")]
         [JsonConverter(typeof(ParseStringConverter))]
-        public long? Zip { get; set; }
+        public long Zip { get; set; }
 
         [JsonProperty("community_council_neighborhood")]
         public string CommunityCouncilNeighborhood { get; set; }
@@ -101,28 +110,18 @@ namespace IncidentRecord
         [JsonProperty("date_of_clearance", NullValueHandling = NullValueHandling.Ignore)]
         public DateTimeOffset? DateOfClearance { get; set; }
 
-        [JsonProperty("theft_code", NullValueHandling = NullValueHandling.Ignore)]
-        public TheftCode? TheftCode { get; set; }
-
-        [JsonProperty("rpt_area", NullValueHandling = NullValueHandling.Ignore)]
-        public string RptArea { get; set; }
-
-        [JsonProperty("cpd_neighborhood", NullValueHandling = NullValueHandling.Ignore)]
-        public string CpdNeighborhood { get; set; }
-
         [JsonProperty("victim_ethnicity", NullValueHandling = NullValueHandling.Ignore)]
-        public Ethnicity? VictimEthnicity { get; set; }
+        public string VictimEthnicity { get; set; }
 
         [JsonProperty("suspect_ethnicity", NullValueHandling = NullValueHandling.Ignore)]
-        public Ethnicity? SuspectEthnicity { get; set; }
+        public string SuspectEthnicity { get; set; }
+
+        [JsonProperty("hate_bias", NullValueHandling = NullValueHandling.Ignore)]
+        public string HateBias { get; set; }
 
         [JsonProperty("totalnumbervictims", NullValueHandling = NullValueHandling.Ignore)]
         [JsonConverter(typeof(ParseStringConverter))]
         public long? Totalnumbervictims { get; set; }
-
-        [JsonProperty("totalsuspects", NullValueHandling = NullValueHandling.Ignore)]
-        [JsonConverter(typeof(ParseStringConverter))]
-        public long? Totalsuspects { get; set; }
     }
 
     public enum BeatEnum { CentralBusinessSection };
@@ -133,17 +132,17 @@ namespace IncidentRecord
 
     public enum DstEnum { CentralBusiness };
 
+    public enum Offense { Abduction, AggravatedBurglary, AggravatedMenacing, AggravatedRobbery, Assault, BreakingAndEntering, Burglary, CriminalDamagingEndangering, CriminalMischief, DomesticViolence, EndangeringChildren, Extortion, FailComplyOrderSignalOfPoEludeFlee, FeloniousAssault, Forgery, ImproperlyDischargingFirearmAtIntoHabitationSchool, Intimidation, Kidnapping, Menacing, MenacingByStalking, PassingBadChecks, Rape, Robbery, SexualBattery, TakingTheIdentityOfAnother, TelephoneHarassment, Theft, UnauthorizedUseOfMotorVehicle, UnlawfulSexualConductWithAMinor, ViolateProtectionOrderConsentAgreement };
+
     public enum Age { Adult18, JuvenileUnder18, Over70, The1825, The2630, The3140, The4150, The5160, The6170, Under18, Unknown };
 
-    public enum Ethnicity { NotOfHispanicOrig };
+    public enum Gender { Female, Male, NonPersonBusiness, Unknown };
 
-    public enum Gender { Female, Male, Unknown };
+    public enum TheftCode { The23BPurseSnatching, The23CShoplifting, The23DTheftFromBuilding, The23FTheftFromMotorVehicle, The23GTheftOfMotorVehiclePartsOrAccessories, The23HAllOtherLarceny, The24ITheftOfLicensePlate, The24OMotorVehicleTheft };
 
-    public enum TheftCode { The23APocketPicking, The23BPurseSnatching, The23CShoplifting, The23DTheftFromBuilding, The23FTheftFromMotorVehicle, The23GTheftOfMotorVehiclePartsOrAccessories, The23HAllOtherLarceny, The24ITheftOfLicensePlate, The24OMotorVehicleTheft };
+    public enum UcrGroup { AggravatedAssaults, BurglaryBreakingEntering, Part2Minor, Rape, Robbery, Theft, UnauthorizedUse };
 
-    public enum UcrGroup { AggravatedAssaults, BurglaryBreakingEntering, Homicide, Part2Minor, Rape, Robbery, Theft, UnauthorizedUse };
-
-    public enum Weapons { The11FirearmTypeNotStated, The12Handgun, The13Rifle, The18BbAndPelletGuns, The20KnifeCuttingInstrumentIcepickAxEtc, The30BluntObjectClubHammerEtc, The35MotorVehicleWhenUsedAsWeapon, The40PersonalWeaponsHandsFeetTeethEtc, The60Explosives, The80OtherWeapon, The85AsphyxiationByDrowningStrangulationSuffocation, The99None, UUnknown };
+    public enum Weapons { The11FirearmTypeNotStated, The12Handgun, The13Rifle, The14Shotgun, The15OtherFirearm, The20KnifeCuttingInstrumentIcepickAxEtc, The30BluntObjectClubHammerEtc, The35MotorVehicleWhenUsedAsWeapon, The40PersonalWeaponsHandsFeetTeethEtc, The80OtherWeapon, The85AsphyxiationByDrowningStrangulationSuffocation, The99None, UUnknown };
 
     public partial struct BeatUnion
     {
@@ -187,8 +186,8 @@ namespace IncidentRecord
                 DayofweekConverter.Singleton,
                 DstUnionConverter.Singleton,
                 DstEnumConverter.Singleton,
+                OffenseConverter.Singleton,
                 AgeConverter.Singleton,
-                EthnicityConverter.Singleton,
                 GenderConverter.Singleton,
                 TheftCodeConverter.Singleton,
                 UcrGroupConverter.Singleton,
@@ -497,6 +496,187 @@ namespace IncidentRecord
         public static readonly DstEnumConverter Singleton = new DstEnumConverter();
     }
 
+    internal class OffenseConverter : JsonConverter
+    {
+        public override bool CanConvert(Type t) => t == typeof(Offense) || t == typeof(Offense?);
+
+        public override object ReadJson(JsonReader reader, Type t, object existingValue, JsonSerializer serializer)
+        {
+            if (reader.TokenType == JsonToken.Null) return null;
+            var value = serializer.Deserialize<string>(reader);
+            switch (value)
+            {
+                case "ABDUCTION":
+                    return Offense.Abduction;
+                case "AGGRAVATED BURGLARY":
+                    return Offense.AggravatedBurglary;
+                case "AGGRAVATED MENACING":
+                    return Offense.AggravatedMenacing;
+                case "AGGRAVATED ROBBERY":
+                    return Offense.AggravatedRobbery;
+                case "ASSAULT":
+                    return Offense.Assault;
+                case "BREAKING AND ENTERING":
+                    return Offense.BreakingAndEntering;
+                case "BURGLARY":
+                    return Offense.Burglary;
+                case "CRIMINAL DAMAGING/ENDANGERING":
+                    return Offense.CriminalDamagingEndangering;
+                case "CRIMINAL MISCHIEF":
+                    return Offense.CriminalMischief;
+                case "DOMESTIC VIOLENCE":
+                    return Offense.DomesticViolence;
+                case "ENDANGERING CHILDREN":
+                    return Offense.EndangeringChildren;
+                case "EXTORTION":
+                    return Offense.Extortion;
+                case "FAIL COMPLY ORDER/SIGNAL OF PO-ELUDE/FLEE":
+                    return Offense.FailComplyOrderSignalOfPoEludeFlee;
+                case "FELONIOUS ASSAULT":
+                    return Offense.FeloniousAssault;
+                case "FORGERY":
+                    return Offense.Forgery;
+                case "IMPROPERLY DISCHARGING FIREARM AT/INTO HABITATION/SCHOOL":
+                    return Offense.ImproperlyDischargingFirearmAtIntoHabitationSchool;
+                case "INTIMIDATION":
+                    return Offense.Intimidation;
+                case "KIDNAPPING":
+                    return Offense.Kidnapping;
+                case "MENACING":
+                    return Offense.Menacing;
+                case "MENACING BY STALKING":
+                    return Offense.MenacingByStalking;
+                case "PASSING BAD CHECKS":
+                    return Offense.PassingBadChecks;
+                case "RAPE":
+                    return Offense.Rape;
+                case "ROBBERY":
+                    return Offense.Robbery;
+                case "SEXUAL BATTERY":
+                    return Offense.SexualBattery;
+                case "TAKING THE IDENTITY OF ANOTHER":
+                    return Offense.TakingTheIdentityOfAnother;
+                case "TELEPHONE HARASSMENT":
+                    return Offense.TelephoneHarassment;
+                case "THEFT":
+                    return Offense.Theft;
+                case "UNAUTHORIZED USE OF MOTOR VEHICLE":
+                    return Offense.UnauthorizedUseOfMotorVehicle;
+                case "UNLAWFUL SEXUAL CONDUCT WITH A MINOR":
+                    return Offense.UnlawfulSexualConductWithAMinor;
+                case "VIOLATE PROTECTION ORDER/CONSENT AGREEMENT":
+                    return Offense.ViolateProtectionOrderConsentAgreement;
+            }
+            throw new Exception("Cannot unmarshal type Offense");
+        }
+
+        public override void WriteJson(JsonWriter writer, object untypedValue, JsonSerializer serializer)
+        {
+            if (untypedValue == null)
+            {
+                serializer.Serialize(writer, null);
+                return;
+            }
+            var value = (Offense)untypedValue;
+            switch (value)
+            {
+                case Offense.Abduction:
+                    serializer.Serialize(writer, "ABDUCTION");
+                    return;
+                case Offense.AggravatedBurglary:
+                    serializer.Serialize(writer, "AGGRAVATED BURGLARY");
+                    return;
+                case Offense.AggravatedMenacing:
+                    serializer.Serialize(writer, "AGGRAVATED MENACING");
+                    return;
+                case Offense.AggravatedRobbery:
+                    serializer.Serialize(writer, "AGGRAVATED ROBBERY");
+                    return;
+                case Offense.Assault:
+                    serializer.Serialize(writer, "ASSAULT");
+                    return;
+                case Offense.BreakingAndEntering:
+                    serializer.Serialize(writer, "BREAKING AND ENTERING");
+                    return;
+                case Offense.Burglary:
+                    serializer.Serialize(writer, "BURGLARY");
+                    return;
+                case Offense.CriminalDamagingEndangering:
+                    serializer.Serialize(writer, "CRIMINAL DAMAGING/ENDANGERING");
+                    return;
+                case Offense.CriminalMischief:
+                    serializer.Serialize(writer, "CRIMINAL MISCHIEF");
+                    return;
+                case Offense.DomesticViolence:
+                    serializer.Serialize(writer, "DOMESTIC VIOLENCE");
+                    return;
+                case Offense.EndangeringChildren:
+                    serializer.Serialize(writer, "ENDANGERING CHILDREN");
+                    return;
+                case Offense.Extortion:
+                    serializer.Serialize(writer, "EXTORTION");
+                    return;
+                case Offense.FailComplyOrderSignalOfPoEludeFlee:
+                    serializer.Serialize(writer, "FAIL COMPLY ORDER/SIGNAL OF PO-ELUDE/FLEE");
+                    return;
+                case Offense.FeloniousAssault:
+                    serializer.Serialize(writer, "FELONIOUS ASSAULT");
+                    return;
+                case Offense.Forgery:
+                    serializer.Serialize(writer, "FORGERY");
+                    return;
+                case Offense.ImproperlyDischargingFirearmAtIntoHabitationSchool:
+                    serializer.Serialize(writer, "IMPROPERLY DISCHARGING FIREARM AT/INTO HABITATION/SCHOOL");
+                    return;
+                case Offense.Intimidation:
+                    serializer.Serialize(writer, "INTIMIDATION");
+                    return;
+                case Offense.Kidnapping:
+                    serializer.Serialize(writer, "KIDNAPPING");
+                    return;
+                case Offense.Menacing:
+                    serializer.Serialize(writer, "MENACING");
+                    return;
+                case Offense.MenacingByStalking:
+                    serializer.Serialize(writer, "MENACING BY STALKING");
+                    return;
+                case Offense.PassingBadChecks:
+                    serializer.Serialize(writer, "PASSING BAD CHECKS");
+                    return;
+                case Offense.Rape:
+                    serializer.Serialize(writer, "RAPE");
+                    return;
+                case Offense.Robbery:
+                    serializer.Serialize(writer, "ROBBERY");
+                    return;
+                case Offense.SexualBattery:
+                    serializer.Serialize(writer, "SEXUAL BATTERY");
+                    return;
+                case Offense.TakingTheIdentityOfAnother:
+                    serializer.Serialize(writer, "TAKING THE IDENTITY OF ANOTHER");
+                    return;
+                case Offense.TelephoneHarassment:
+                    serializer.Serialize(writer, "TELEPHONE HARASSMENT");
+                    return;
+                case Offense.Theft:
+                    serializer.Serialize(writer, "THEFT");
+                    return;
+                case Offense.UnauthorizedUseOfMotorVehicle:
+                    serializer.Serialize(writer, "UNAUTHORIZED USE OF MOTOR VEHICLE");
+                    return;
+                case Offense.UnlawfulSexualConductWithAMinor:
+                    serializer.Serialize(writer, "UNLAWFUL SEXUAL CONDUCT WITH A MINOR");
+                    return;
+                case Offense.ViolateProtectionOrderConsentAgreement:
+                    serializer.Serialize(writer, "VIOLATE PROTECTION ORDER/CONSENT AGREEMENT");
+                    return;
+            }
+            throw new Exception("Cannot marshal type Offense");
+        }
+
+        public static readonly OffenseConverter Singleton = new OffenseConverter();
+    }
+
     internal class ParseStringConverter : JsonConverter
     {
         public override bool CanConvert(Type t) => t == typeof(long) || t == typeof(long?);
@@ -614,40 +794,6 @@ namespace IncidentRecord
         public static readonly AgeConverter Singleton = new AgeConverter();
     }
 
-    internal class EthnicityConverter : JsonConverter
-    {
-        public override bool CanConvert(Type t) => t == typeof(Ethnicity) || t == typeof(Ethnicity?);
-
-        public override object ReadJson(JsonReader reader, Type t, object existingValue, JsonSerializer serializer)
-        {
-            if (reader.TokenType == JsonToken.Null) return null;
-            var value = serializer.Deserialize<string>(reader);
-            if (value == "NOT OF HISPANIC ORIG")
-            {
-                return Ethnicity.NotOfHispanicOrig;
-            }
-            throw new Exception("Cannot unmarshal type Ethnicity");
-        }
-
-        public override void WriteJson(JsonWriter writer, object untypedValue, JsonSerializer serializer)
-        {
-            if (untypedValue == null)
-            {
-                serializer.Serialize(writer, null);
-                return;
-            }
-            var value = (Ethnicity)untypedValue;
-            if (value == Ethnicity.NotOfHispanicOrig)
-            {
-                serializer.Serialize(writer, "NOT OF HISPANIC ORIG");
-                return;
-            }
-            throw new Exception("Cannot marshal type Ethnicity");
-        }
-
-        public static readonly EthnicityConverter Singleton = new EthnicityConverter();
-    }
-
     internal class GenderConverter : JsonConverter
     {
         public override bool CanConvert(Type t) => t == typeof(Gender) || t == typeof(Gender?);
@@ -662,6 +808,8 @@ namespace IncidentRecord
                     return Gender.Female;
                 case "MALE":
                     return Gender.Male;
+                case "NON-PERSON (BUSINESS":
+                    return Gender.NonPersonBusiness;
                 case "UNKNOWN":
                     return Gender.Unknown;
             }
@@ -684,6 +832,9 @@ namespace IncidentRecord
                 case Gender.Male:
                     serializer.Serialize(writer, "MALE");
                     return;
+                case Gender.NonPersonBusiness:
+                    serializer.Serialize(writer, "NON-PERSON (BUSINESS");
+                    return;
                 case Gender.Unknown:
                     serializer.Serialize(writer, "UNKNOWN");
                     return;
@@ -704,8 +855,6 @@ namespace IncidentRecord
             var value = serializer.Deserialize<string>(reader);
             switch (value)
             {
-                case "23A-POCKET-PICKING":
-                    return TheftCode.The23APocketPicking;
                 case "23B-PURSE-SNATCHING":
                     return TheftCode.The23BPurseSnatching;
                 case "23C-SHOPLIFTING":
@@ -736,9 +885,6 @@ namespace IncidentRecord
             var value = (TheftCode)untypedValue;
             switch (value)
             {
-                case TheftCode.The23APocketPicking:
-                    serializer.Serialize(writer, "23A-POCKET-PICKING");
-                    return;
                 case TheftCode.The23BPurseSnatching:
                     serializer.Serialize(writer, "23B-PURSE-SNATCHING");
                     return;
@@ -784,8 +930,6 @@ namespace IncidentRecord
                     return UcrGroup.AggravatedAssaults;
                 case "BURGLARY/BREAKING ENTERING":
                     return UcrGroup.BurglaryBreakingEntering;
-                case "HOMICIDE":
-                    return UcrGroup.Homicide;
                 case "PART 2 MINOR":
                     return UcrGroup.Part2Minor;
                 case "RAPE":
@@ -815,9 +959,6 @@ namespace IncidentRecord
                     return;
                 case UcrGroup.BurglaryBreakingEntering:
                     serializer.Serialize(writer, "BURGLARY/BREAKING ENTERING");
-                    return;
-                case UcrGroup.Homicide:
-                    serializer.Serialize(writer, "HOMICIDE");
                     return;
                 case UcrGroup.Part2Minor:
                     serializer.Serialize(writer, "PART 2 MINOR");
@@ -857,8 +998,10 @@ namespace IncidentRecord
                     return Weapons.The12Handgun;
                 case "13 - RIFLE":
                     return Weapons.The13Rifle;
-                case "18 - BB AND PELLET GUNS":
-                    return Weapons.The18BbAndPelletGuns;
+                case "14 - SHOTGUN":
+                    return Weapons.The14Shotgun;
+                case "15 - OTHER FIREARM":
+                    return Weapons.The15OtherFirearm;
                 case "20 - KNIFE/CUTTING INSTRUMENT (ICEPICK, AX, ETC.)":
                     return Weapons.The20KnifeCuttingInstrumentIcepickAxEtc;
                 case "30 - BLUNT OBJECT (CLUB, HAMMER, ETC.)":
@@ -867,8 +1010,6 @@ namespace IncidentRecord
                     return Weapons.The35MotorVehicleWhenUsedAsWeapon;
                 case "40 - PERSONAL WEAPONS (HANDS, FEET, TEETH, ETC.)":
                     return Weapons.The40PersonalWeaponsHandsFeetTeethEtc;
-                case "60 - EXPLOSIVES":
-                    return Weapons.The60Explosives;
                 case "80 - OTHER WEAPON":
                     return Weapons.The80OtherWeapon;
                 case "85 - ASPHYXIATION (BY DROWNING, STRANGULATION, SUFFOCATION)":
@@ -900,8 +1041,11 @@ namespace IncidentRecord
                 case Weapons.The13Rifle:
                     serializer.Serialize(writer, "13 - RIFLE");
                     return;
-                case Weapons.The18BbAndPelletGuns:
-                    serializer.Serialize(writer, "18 - BB AND PELLET GUNS");
+                case Weapons.The14Shotgun:
+                    serializer.Serialize(writer, "14 - SHOTGUN");
+                    return;
+                case Weapons.The15OtherFirearm:
+                    serializer.Serialize(writer, "15 - OTHER FIREARM");
                     return;
                 case Weapons.The20KnifeCuttingInstrumentIcepickAxEtc:
                     serializer.Serialize(writer, "20 - KNIFE/CUTTING INSTRUMENT (ICEPICK, AX, ETC.)");
@@ -914,9 +1058,6 @@ namespace IncidentRecord
                     return;
                 case Weapons.The40PersonalWeaponsHandsFeetTeethEtc:
                     serializer.Serialize(writer, "40 - PERSONAL WEAPONS (HANDS, FEET, TEETH, ETC.)");
-                    return;
-                case Weapons.The60Explosives:
-                    serializer.Serialize(writer, "60 - EXPLOSIVES");
                     return;
                 case Weapons.The80OtherWeapon:
                     serializer.Serialize(writer, "80 - OTHER WEAPON");
