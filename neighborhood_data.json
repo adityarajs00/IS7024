@@ -28,5 +28,15 @@
     "Neighborhood": null,
     "SafetyRating": 1,
     "Comments": ""
+  },
+  {
+    "FullName": "Ishaan",
+    "Email": "ishaan@uc.com",
+    "PhoneNumber": "5168292938",
+    "Address": "123 Parker Street",
+    "City": "Cincinnati",
+    "Neighborhood": null,
+    "SafetyRating": 3,
+    "Comments": ""
   }
 ]
