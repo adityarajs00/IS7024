@@ -49,7 +49,12 @@ namespace Neighborhood_Watch.Pages
                 searchResults.AddRange(dataFromUrl2);
 
                 // Filter the results based on the search term within the attributes
-                SearchResults = searchResults.Where(item => item.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase)).ToList();
+                SearchResults = dataFromUrl1.Where(item => item.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase)).ToList();
+                string combinedJsonArray = "[" + string.Join(",", SearchResults) + "]";
+                var IncidentList = Incidents.FromJson(combinedJsonArray);
+                ViewData["Incidents"] = IncidentList;
+
+
             }
 
         }

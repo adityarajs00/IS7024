@@ -1,6 +1,8 @@
 @page
 @using IncidentRecord;
 @using CallsForService;
+@using Newtonsoft.Json;
+
 @model IndexModel
 @{
     ViewData["Title"] = "Home page";
@@ -25,54 +27,49 @@
     <h1 class="display-4">Neighborhood Watch</h1>    
 </div>
 
- 
-@*@foreach (Calls cl in cls)
-{
-    <h3>@cl.CpdNeighborhood</h3>
-}
-<table>
-    <tr>
-        <th>Instance Id</th>
-        <th>Incident No</th>
-        <th>Date Reported</th>
-        <th>Date From</th>
-        <th>Ucr</th>
-    </tr>
-
-    @{
-        foreach (Incidents incidents in incident)
-        {
-            <tr>
-                <td>@incidents.Instanceid</td>
-                <td>@incidents.IncidentNo</td>
-                <td>@incidents.DateReported</td>
-                <td>@incidents.DateFrom</td>
-                <td>@incidents.Ucr</td>
-            </tr>
-        }
-    }
-
-</table>*@
 
 
-@if (Model.SearchResults != null)
+
+@if (Model.SearchResults != null && Model.SearchResults.Any())
 {
     <div class="search-results">
-        <h3>Search Results:</h3>
-        <ul>
-           @foreach (var result in Model.SearchResults)
-{
-    <li class="search-result-item">
-        <span style="font-weight: bold;">@result</span>
-    </li>
-    
-}
-
-
-        </ul>
-        <hr> <!--placed horizontal line outside-->
+        <h3>Search Results: @Model.SearchResults.Count records found</h3>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Incident No</th>
+                    <th>Date Reported</th>
+                    <th>Offense</th>
+                    <th>Location</th>
+                    <th>CPD Neighborhood</th>
+                    <th>Victim Age</th>
+                    <th>Victim Gender</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var result in incident)
+                {
+                    <tr>
+                        <td>@result.IncidentNo</td>
+                        <td>@result.DateReported</td>
+                        <td>@result.Offense</td>
+                        <td>@result.Location</td>
+                        <td>@result.CpdNeighborhood</td>
+                        <td>@result.VictimAge</td>
+                        <td>@result.VictimGender</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <hr>
     </div>
 }
+
+
+
+
+
+
 
 <div class="container mt-5">
     <h3 class="text-center w-100 text-dark h3 mt-5 mb-2">Safest Neighborhoods In Cincinnati</h3>
