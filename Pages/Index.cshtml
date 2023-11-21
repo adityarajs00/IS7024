@@ -33,7 +33,10 @@
 @if (Model.SearchResults != null && Model.SearchResults.Any())
 {
     <div class="search-results">
-        <h3>Search Results: @Model.SearchResults.Count records found</h3>
+        <br>
+        <h3><strong>Incidents Reported:</strong> @Model.SearchResults.Count records found |<strong> Call for Service:</strong> @Model.SearchResults2.Count records found</h3>
+        <br>
+        <h4><strong>Incident Records</strong></h4>
         <table class="table table-bordered">
             <thead>
                 <tr>
@@ -61,7 +64,33 @@
                 }
             </tbody>
         </table>
+        <br>
         <hr>
+        <br>
+        <h4><strong>Call for Service Records</strong></h4>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Event Number</th>
+                    <th>Address</th>
+                    <th>CPD Neighborhood</th>
+                    <th>Incident Type</th>
+                    <th>Date and Time</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var result in cls)
+                {
+                    <tr>
+                        <td>@result.EventNumber</td>
+                        <td>@result.AddressX</td>
+                        <td>@result.CpdNeighborhood</td>
+                        <td>@result.IncidentTypeDesc</td>
+                        <td>@result.CreateTimeIncident</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
     </div>
 }
 
