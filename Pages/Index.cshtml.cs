@@ -39,6 +39,7 @@ namespace Neighborhood_Watch.Pages
 
                 // Create a list to store the results
                 List<string> searchResults = new List<string>();
+                List<string> searchResults2 = new List<string>();
 
                 // Fetch and process data from the first URL
                 var dataFromUrl1 = await FetchDataFromUrl(url1);
@@ -46,10 +47,20 @@ namespace Neighborhood_Watch.Pages
 
                 // Fetch and process data from the second URL
                 var dataFromUrl2 = await FetchDataFromUrl(url2);
-                searchResults.AddRange(dataFromUrl2);
+                searchResults2.AddRange(dataFromUrl2);
 
                 // Filter the results based on the search term within the attributes
-                SearchResults = searchResults.Where(item => item.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase)).ToList();
+                SearchResults = dataFromUrl1.Where(item => item.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase)).ToList();
+                string combinedJsonArray = "[" + string.Join(",", SearchResults) + "]";
+                var IncidentList = Incidents.FromJson(combinedJsonArray);
+                ViewData["Incidents"] = IncidentList;
+
+                SearchResults2 = dataFromUrl2.Where(item => item.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase)).ToList();
+                string combinedJsonArray2 = "[" + string.Join(",", SearchResults2) + "]";
+                var CallList = Calls.FromJson(combinedJsonArray2);
+                ViewData["Services"] = CallList;
+
+                ViewData["SearchTerm"] = SearchTerm;
             }
 
         }
@@ -92,6 +103,7 @@ namespace Neighborhood_Watch.Pages
         public string? SearchTerm { get; set; }
 
         public List<string>? SearchResults { get; set; }
+        public List<string>? SearchResults2 { get; set; }
 
         private async Task<List<string>> FetchDataFromUrl(string url)
         {

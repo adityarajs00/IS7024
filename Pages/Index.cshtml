@@ -1,11 +1,14 @@
 @page
 @using IncidentRecord;
 @using CallsForService;
+@using Newtonsoft.Json;
+
 @model IndexModel
 @{
     ViewData["Title"] = "Home page";
     List<Calls>? cls = ViewData["Services"] as List<Calls>;
     List<Incidents>? incident = ViewData["Incidents"] as List<Incidents>;
+    var SearchTerm = ViewData["SearchTerm"];
     // Using null conditional operators to handle reference types
 }
 <head>
@@ -25,54 +28,78 @@
     <h1 class="display-4">Neighborhood Watch</h1>    
 </div>
 
- 
-@*@foreach (Calls cl in cls)
-{
-    <h3>@cl.CpdNeighborhood</h3>
-}
-<table>
-    <tr>
-        <th>Instance Id</th>
-        <th>Incident No</th>
-        <th>Date Reported</th>
-        <th>Date From</th>
-        <th>Ucr</th>
-    </tr>
-
-    @{
-        foreach (Incidents incidents in incident)
-        {
-            <tr>
-                <td>@incidents.Instanceid</td>
-                <td>@incidents.IncidentNo</td>
-                <td>@incidents.DateReported</td>
-                <td>@incidents.DateFrom</td>
-                <td>@incidents.Ucr</td>
-            </tr>
-        }
-    }
-
-</table>*@
 
 
-@if (Model.SearchResults != null)
+
+@if (Model.SearchResults != null && Model.SearchResults.Any())
 {
     <div class="search-results">
-        <h3>Search Results:</h3>
-        <ul>
-           @foreach (var result in Model.SearchResults)
-{
-    <li class="search-result-item">
-        <span style="font-weight: bold;">@result</span>
-    </li>
-    
-}
-
-
-        </ul>
-        <hr> <!--placed horizontal line outside-->
+        <br>
+        <h3>For <strong>'@SearchTerm'</strong>, <strong>Incidents Reported:</strong> @Model.SearchResults.Count records found,<strong> Call for Service:</strong> @Model.SearchResults2.Count records found</h3>
+        <br>
+        <h4><strong>Incident Records</strong></h4>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Incident No</th>
+                    <th>Date Reported</th>
+                    <th>Offense</th>
+                    <th>Location</th>
+                    <th>CPD Neighborhood</th>
+                    <th>Victim Age</th>
+                    <th>Victim Gender</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var result in incident)
+                {
+                    <tr>
+                        <td>@result.IncidentNo</td>
+                        <td>@result.DateReported</td>
+                        <td>@result.Offense</td>
+                        <td>@result.Location</td>
+                        <td>@result.CpdNeighborhood</td>
+                        <td>@result.VictimAge</td>
+                        <td>@result.VictimGender</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <br>
+        <hr>
+        <br>
+        <h4><strong>Call for Service Records</strong></h4>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Event Number</th>
+                    <th>Address</th>
+                    <th>CPD Neighborhood</th>
+                    <th>Incident Type</th>
+                    <th>Date and Time</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var result in cls)
+                {
+                    <tr>
+                        <td>@result.EventNumber</td>
+                        <td>@result.AddressX</td>
+                        <td>@result.CpdNeighborhood</td>
+                        <td>@result.IncidentTypeDesc</td>
+                        <td>@result.CreateTimeIncident</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
     </div>
 }
+
+
+
+
+
+
 
 <div class="container mt-5">
     <h3 class="text-center w-100 text-dark h3 mt-5 mb-2">Safest Neighborhoods In Cincinnati</h3>
