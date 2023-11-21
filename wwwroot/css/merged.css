@@ -1,0 +1,54 @@
+﻿/* Global Styles */
+
+body {
+    font-family: 'Open Sans', sans-serif;
+}
+
+/* Mobile Styles */
+
+@media only screen and (max-width: 767px) {
+    .contact_form-container div {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .contact_form-container label,
+    .contact_form-container input,
+    .contact_form-container textarea,
+    .contact_form-container select {
+        width: 100%;
+        margin-bottom: 15px;
+    }
+
+    /* Add more mobile styles as needed */
+}
+
+/* Print Styles */
+
+@media print {
+    body {
+        font-family: 'Poppins', sans-serif;
+    }
+
+    h2 {
+        color: #333;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+        border: 1px solid black;
+    }
+
+        table th,
+        table td {
+            border: 1px solid black;
+            padding: 8px;
+        }
+
+    p {
+        font-style: italic;
+    }
+
+}
