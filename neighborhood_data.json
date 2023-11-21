@@ -1,0 +1,32 @@
+[
+  {
+    "FullName": "Shivani Pilli",
+    "Email": "shivani.pilli@gmail.com",
+    "PhoneNumber": "51345233425",
+    "Address": "Cincinnati",
+    "City": null,
+    "SelectedNeighborhood": null,
+    "SafetyRating": 5,
+    "Comments": null
+  },
+  {
+    "FullName": "Aditya Raj",
+    "Email": "aditya.raj@gmail.com",
+    "PhoneNumber": "5134237865",
+    "Address": "Cincinnati",
+    "City": null,
+    "SelectedNeighborhood": null,
+    "SafetyRating": 4,
+    "Comments": null
+  },
+  {
+    "FullName": "SHivani",
+    "Email": "shivani.pilli@gmail.com",
+    "PhoneNumber": "51345233425",
+    "Address": "Bishop Steet",
+    "City": null,
+    "SelectedNeighborhood": null,
+    "SafetyRating": 5,
+    "Comments": "ABCD"
+  }
+]

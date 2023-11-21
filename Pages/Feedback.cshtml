@@ -31,7 +31,7 @@
         <div class="">
             <div class="row">
                 <div class="col-md-7 mx-auto">
-                    <form action="#">
+                    <form method="post">
                         <div class="contact_form-container">
                             <div>
                                 <div>
@@ -47,18 +47,25 @@
                                     <input type="text" placeholder="Address" name="address"/>
                                 </div>
                                 <div>
-                                    <select class="neighborhood_dropdown">
-                                        <option value="" disabled selected>Select Neighborhood</option>
-                                        <option value="neighborhood1">Neighborhood 1</option>
-                                        <option value="neighborhood2">Neighborhood 2</option>
-                                    </select>
-                                </div>  
-                                <div class="slidecontainer">
-                                    <input type="range" class="slider" min="0" max="10" step="1" value="5" id="safety_rating">
-                                    <label for="safety_rating">Safety Rating: <span id="safety_rating_value">5</span></label>
+                                    <input type="text" placeholder="City" name="city" />
                                 </div>
                                 <div>
-                                    <input type="text" placeholder="Comments" class="message_input" />
+                                    <input type="text" placeholder="Neighbourhood" name="neighbourhood" />
+                                </div>
+                                
+                               
+                                <div >
+                                    <label for="safety_rating">Safety Rating:</label>
+                                    <select name="safety_rating" id="safety_rating">
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5" selected>5</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <textarea placeholder="Comments" class="message_input" name="comments"></textarea>
                                 </div>
                                 <div class="btn-box">
                                     <button type="submit">
@@ -73,6 +80,44 @@
         </div>
     </div>
 </section>
+
+@if (Model.NeighborhoodData != null && Model.NeighborhoodData.Count > 0)
+{
+    <h2>Neighborhood Data</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Full Name</th>
+                <th>Email</th>
+                <th>Phone Number</th>
+                <th>Address</th>
+                <th>City</th>
+                <th>Neighborhood</th>
+                <th>Safety Rating</th>
+                <th>Comments</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var data in Model.NeighborhoodData)
+            {
+                <tr>
+                    <td>@data.FullName</td>
+                    <td>@data.Email</td>
+                    <td>@data.PhoneNumber</td>
+                    <td>@data.Address</td>
+                    <td>@data.City</td>
+                    <td>@data.SelectedNeighborhood</td>
+                    <td>@data.SafetyRating</td>
+                    <td>@data.Comments</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No neighborhood data available.</p>
+}
 
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
