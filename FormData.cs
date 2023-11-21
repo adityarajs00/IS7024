@@ -8,7 +8,7 @@
         public string Address { get; set; }
 
         public string City { get; set; }
-        public string SelectedNeighborhood { get; set; }
+        public string Neighborhood { get; set; }
         public int SafetyRating { get; set; }
         public string Comments { get; set; }
     }

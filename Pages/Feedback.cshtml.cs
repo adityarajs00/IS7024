@@ -44,7 +44,8 @@ namespace Neighborhood_Watch.Pages
                 Email = Request.Form["email"],
                 PhoneNumber = Request.Form["phoneNumber"],
                 Address = Request.Form["address"],
-                SelectedNeighborhood = Request.Form["neighborhood"],
+                City = Request.Form["city"],
+                Neighborhood = Request.Form["neighborhood"],
                 SafetyRating = Convert.ToInt32(Request.Form["safety_rating"]),
                 Comments = Request.Form["comments"]
             };
@@ -53,7 +54,7 @@ namespace Neighborhood_Watch.Pages
             SaveToJsonFile(formData);
 
             // You can perform additional processing or redirect the user after saving the data
-            return RedirectToPage("/Index"); // Redirect to the home page for example
+            return RedirectToPage("/Feedback"); // Redirect to the home page for example
         }
 
         private void SaveToJsonFile(FormData formData)

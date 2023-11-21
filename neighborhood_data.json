@@ -1,32 +1,32 @@
 [
   {
-    "FullName": "Shivani Pilli",
-    "Email": "shivani.pilli@gmail.com",
-    "PhoneNumber": "51345233425",
-    "Address": "Cincinnati",
+    "FullName": "Yash Shukla",
+    "Email": "yashshukla@gmail.com",
+    "PhoneNumber": "9897654567",
+    "Address": "Bishop Street",
     "City": null,
-    "SelectedNeighborhood": null,
+    "Neighborhood": null,
     "SafetyRating": 5,
-    "Comments": null
+    "Comments": ""
   },
   {
-    "FullName": "Aditya Raj",
-    "Email": "aditya.raj@gmail.com",
-    "PhoneNumber": "5134237865",
-    "Address": "Cincinnati",
+    "FullName": "Yash Shukla",
+    "Email": "yashshukla@gmail.com",
+    "PhoneNumber": "9897654567",
+    "Address": "Bishop Street",
     "City": null,
-    "SelectedNeighborhood": null,
-    "SafetyRating": 4,
-    "Comments": null
+    "Neighborhood": null,
+    "SafetyRating": 5,
+    "Comments": "Good area to live"
   },
   {
-    "FullName": "SHivani",
-    "Email": "shivani.pilli@gmail.com",
-    "PhoneNumber": "51345233425",
-    "Address": "Bishop Steet",
-    "City": null,
-    "SelectedNeighborhood": null,
-    "SafetyRating": 5,
-    "Comments": "ABCD"
+    "FullName": "Ad",
+    "Email": "dwbd@DGW.COM",
+    "PhoneNumber": "dbwqkbdk",
+    "Address": "d",
+    "City": "wbKJQBSS",
+    "Neighborhood": null,
+    "SafetyRating": 1,
+    "Comments": ""
   }
 ]

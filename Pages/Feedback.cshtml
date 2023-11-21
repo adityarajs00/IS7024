@@ -80,44 +80,47 @@
         </div>
     </div>
 </section>
-
-@if (Model.NeighborhoodData != null && Model.NeighborhoodData.Count > 0)
-{
-    <h2>Neighborhood Data</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>Full Name</th>
-                <th>Email</th>
-                <th>Phone Number</th>
-                <th>Address</th>
-                <th>City</th>
-                <th>Neighborhood</th>
-                <th>Safety Rating</th>
-                <th>Comments</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var data in Model.NeighborhoodData)
-            {
+<div style="text-align: center; margin: auto; padding-top: 20px;">
+    @if (Model.NeighborhoodData != null && Model.NeighborhoodData.Count > 0)
+    {
+        <h2>Neighborhood Data</h2>
+        <table style="width: 80%; margin-top: 10px; margin-left: auto; margin-right: auto; border-collapse: collapse; border: 1px solid black;">
+            <thead>
                 <tr>
-                    <td>@data.FullName</td>
-                    <td>@data.Email</td>
-                    <td>@data.PhoneNumber</td>
-                    <td>@data.Address</td>
-                    <td>@data.City</td>
-                    <td>@data.SelectedNeighborhood</td>
-                    <td>@data.SafetyRating</td>
-                    <td>@data.Comments</td>
+                    <th style="border: 1px solid black;">Full Name</th>
+                    <th style="border: 1px solid black;">Email</th>
+                    <th style="border: 1px solid black;">Phone Number</th>
+                    <th style="border: 1px solid black;">Address</th>
+                    <th style="border: 1px solid black;">City</th>
+                    <th style="border: 1px solid black;">Neighborhood</th>
+                    <th style="border: 1px solid black;">Safety Rating</th>
+                    <th style="border: 1px solid black;">Comments</th>
                 </tr>
-            }
-        </tbody>
-    </table>
-}
-else
-{
-    <p>No neighborhood data available.</p>
-}
+            </thead>
+            <tbody>
+                @foreach (var data in Model.NeighborhoodData)
+                {
+                    <tr>
+                        <td style="border: 1px solid black;">@data.FullName</td>
+                        <td style="border: 1px solid black;">@data.Email</td>
+                        <td style="border: 1px solid black;">@data.PhoneNumber</td>
+                        <td style="border: 1px solid black;">@data.Address</td>
+                        <td style="border: 1px solid black;">@data.City</td>
+                        <td style="border: 1px solid black;">@data.Neighborhood</td>
+                        <td style="border: 1px solid black;">@data.SafetyRating</td>
+                        <td style="border: 1px solid black;">@data.Comments</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>No neighborhood data available.</p>
+    }
+</div>
+
+
 
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
