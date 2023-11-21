@@ -60,6 +60,7 @@ namespace Neighborhood_Watch.Pages
                 var CallList = Calls.FromJson(combinedJsonArray2);
                 ViewData["Services"] = CallList;
 
+                ViewData["SearchTerm"] = SearchTerm;
             }
 
         }

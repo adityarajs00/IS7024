@@ -8,6 +8,7 @@
     ViewData["Title"] = "Home page";
     List<Calls>? cls = ViewData["Services"] as List<Calls>;
     List<Incidents>? incident = ViewData["Incidents"] as List<Incidents>;
+    var SearchTerm = ViewData["SearchTerm"];
     // Using null conditional operators to handle reference types
 }
 <head>
@@ -34,7 +35,7 @@
 {
     <div class="search-results">
         <br>
-        <h3><strong>Incidents Reported:</strong> @Model.SearchResults.Count records found |<strong> Call for Service:</strong> @Model.SearchResults2.Count records found</h3>
+        <h3>For <strong>'@SearchTerm'</strong>, <strong>Incidents Reported:</strong> @Model.SearchResults.Count records found,<strong> Call for Service:</strong> @Model.SearchResults2.Count records found</h3>
         <br>
         <h4><strong>Incident Records</strong></h4>
         <table class="table table-bordered">
