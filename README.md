@@ -66,18 +66,24 @@ Neighborhood crime incidents data and police call for service data
  
 **When** I search for "Clifton"
  
-**Then** I should receive at least one result with these attributes:
+**Then** I should receive the number of incidents reported and calls for service with atleast one of these attributes:
  
-neighborhood: Clifton
- 
- 
-Safety Index: Safe
+Incident No: 239033906
  
  
-Response Time Index: High
+Date Reported: 11/17/2023
  
  
-Safe Time to Visit: 10 AM to 5 PM
+Offense: Theft
+ 
+ 
+CPD Neighbourhood: Clifton
+
+
+Victim Age: 41-50
+
+
+Victim Gender: Female
  
  
  
@@ -88,77 +94,29 @@ Safe Time to Visit: 10 AM to 5 PM
  
 **When** I search for "Female"
  
-**Then** I should receive at least one result with these attributes:
+**Then** I should receive the number of incidents reported and calls for service with atleast one of these attributes:
  
-neighborhood: Clifton
- 
- 
-Safety Index: Safe
+Incident No: 239033906
  
  
-Response Time Index: High
+Date Reported: 11/17/2023
  
  
-Safe Time to Visit: 10 AM to 5 PM
+Offense: Theft
  
  
-Female Safety Index: High
- 
- 
- 
+CPD Neighbourhood: Clifton
+
+
+Victim Age: 41-50
+
+
+Victim Gender: Female
  
  
  
  
 ##### Example 1.3:
- 
-**Given** the crime & call response data is available
- 
-**When** I search for "C"
- 
-**Then** I should receive results with neighbourhoods that start with "C" with these attributes:
- 
-neighborhood: Clifton
- 
- 
-Safety Index: Safe
- 
- 
-Response Time Index: High
- 
- 
-Safe Time to Visit: 10 AM to 5 PM
- 
- 
- 
-neighborhood: Calhoun
- 
- 
-Safety Index: Safe
- 
- 
-Response Time Index: Moderate
- 
- 
-Safe Time to Visit: 9 AM to 8 PM
- 
- 
- 
-neighborhood: Corryville
- 
- 
-Safety Index: Moderately Safe
- 
- 
-Response Time Index: High
- 
- 
-Safe Time to Visit: 10 AM to 3 PM
- 
- 
- 
- 
-##### Example 1.4:
  
 **Given** crime & call response data is available
  
@@ -168,7 +126,7 @@ Safe Time to Visit: 10 AM to 3 PM
  
  
  
-#### Requirement 2: Provide neighborhood safety review
+#### Requirement 2: Provide neighborhood safety review/feedback
  
 ##### Scenario:
  
