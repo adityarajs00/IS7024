@@ -161,15 +161,6 @@ As a user, I want to be able to provide safety review about my neighborhood
  
 **Then** the data should not be saved and when I go to the reviews page I should not be able to see my review
  
-##### Example 2.3:
- 
- 
-**Given** crime & call response data is available
- 
-**When** I add a photo for a review of a neighborhood and hit save
- 
-**Then** the data should be saved and when I go to the reviews page I should be able to see the review with the photo
- 
  
  
  
