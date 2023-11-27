@@ -3,6 +3,7 @@ using IncidentRecord;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.IdentityModel.Tokens;
+using Neighborhood_Watch.ApiData;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Threading.Tasks;
@@ -23,6 +24,7 @@ namespace Neighborhood_Watch.Pages
 
         public async Task OnGetAsync()
         {
+            LoadApiData();
             Task<List<Incidents>> incidents = GetIncidentsData();
             incident = incidents.Result;
             ViewData["Incidents"] = incident;
@@ -63,6 +65,17 @@ namespace Neighborhood_Watch.Pages
                 ViewData["SearchTerm"] = SearchTerm;
             }
 
+        }
+
+        public void LoadApiData()
+        {
+            using (StreamReader r = new StreamReader("ApiData/data.json"))
+            {
+                String json = r.ReadToEnd();
+                List<StateDataModel> dataModel = JsonConvert.DeserializeObject<List<StateDataModel>>(json);
+                StateRepository.allStates = dataModel;
+            }
+            
         }
 
         private async Task<List<Calls>> GetCallsData()
