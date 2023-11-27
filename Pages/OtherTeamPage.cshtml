@@ -1,0 +1,29 @@
+﻿@page
+@using NeighborhoodWatch;
+@model OtherTeamPage;
+
+@{
+    List<OtherTeamPageModel> otherData = (List<OtherTeamPageModel>)ViewData["othersdata"];
+    string error = (string)ViewData["error"];
+}
+
+@if (otherData == null || !string.IsNullOrEmpty(error))
+{
+    <blockquote class="blockquote">@error</blockquote>
+}
+@if (otherData != null)
+{
+    <table class="table">
+        <thead>
+        <th>State</th>
+        <th>Code</th>
+        </thead>
+        @foreach (OtherTeamPageModel other in otherData)
+        {
+            <tr>
+                <td>@other.Name</td>
+                <td>@other.Code</td>
+            </tr>
+        }
+    </table>
+}
